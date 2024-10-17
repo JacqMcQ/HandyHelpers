@@ -1,7 +1,16 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
-mongoose.connect(
-  process.env.MONGODB_URI ||"mongodb+srv://jacqlynmcquade:aqrYQxL6tCXvOJmi@handy-helpers.pql0f.mongodb.net/?retryWrites=true&w=majority&appName=handy-helpers"
-);
+const connect = async () => {
+  try {
+    await mongoose.connect(
+      process.env.MONGODB_URI ||
+        "mongodb+srv://jacqlynmcquade:aqrYQxL6tCXvOJmi@handy-helpers.pql0f.mongodb.net/handy-helpers?retryWrites=true&w=majority"
+    );
+    console.log("MongoDB connected");
+  } catch (error) {
+    console.error("MongoDB connection error:", error);
+    throw error;
+  }
+};
 
-module.exports = mongoose.connection;
+export default connect; 
