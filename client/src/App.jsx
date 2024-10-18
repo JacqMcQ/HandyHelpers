@@ -1,18 +1,46 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Login from './pages/Login';
-import CleaningServices from "./pages/CleaningServices";
-import Signup from "./pages/Signup"; // Import the Signup component
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  createHttpLink,
+} from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
+import { Outlet } from 'react-router-dom';
+
+import Header from './components/Header';
+import Footer from './components/Footer';
+
+const httpLink = createHttpLink({
+  uri: '/graphql',
+});
+
+const authLink = setContext((_, { headers }) => {
+  const token = localStorage.getItem('id_token');
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : '',
+    },
+  };
+});
+
+const client = new ApolloClient({
+  link: authLink.concat(httpLink),
+  cache: new InMemoryCache(),
+});
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/cleaning-services" element={<CleaningServices />} />
-        <Route path="/signup" element={<Signup />} /> 
-      </Routes>
-    </Router>
-  );
+    <ApolloProvider client={client}>
+      <div className="flex-column justify-flex-start min-100-vh">
+        <Header />
+        <div className="container">
+          <Outlet />
+        </div>
+        <Footer />
+      </div>
+    </ApolloProvider>
+  ); // Closing the return statement
 }
 
 export default App;
