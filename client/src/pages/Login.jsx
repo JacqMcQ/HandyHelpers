@@ -8,7 +8,7 @@ function Login(props) {
     const [formState, setFormState] = useState({ email: '', password: '' });
     const [login, { error }] = useMutation(LOGIN);
 
-    const handleFormSubmit = async (event) -> {
+    const handleFormSubmit = async (event) => {
         event.preventDefault();
         try {
             const mutationResponse = await login({
@@ -48,9 +48,9 @@ function Login(props) {
             <div className='flex-row space-between my-2'>
                 <label>Password:</label>
                 <input
+                    placeholder='******'
                     type='password'
                     name='password'
-                    type='password'
                     id='pwd'
                     onChange={handleChange}
                 />
