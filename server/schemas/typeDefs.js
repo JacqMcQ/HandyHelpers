@@ -47,8 +47,13 @@ const typeDefs = gql`
       email: String!
       password: String!
       username: String! # Add username argument here
-    ): User
+    ): Auth
 
+    login(
+      email: String!
+      password: String!
+    ): Auth
+    
     addAddress(
       address_line_1: String!
       city: String!
@@ -62,6 +67,11 @@ const typeDefs = gql`
     description: String, 
     price: Float
     ): Service
+  }
+
+  type Auth {
+    token: String!
+    user: User!
   }
 `;
 
