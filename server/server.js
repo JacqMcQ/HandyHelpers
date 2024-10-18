@@ -5,6 +5,8 @@ import dotenv from "dotenv";
 import { typeDefs, resolvers } from "./schemas/index.js"; // Make sure this path is correct
 import addressRoutes from "./routes/address.js";
 import googlePlacesRoutes from "./routes/googlePlacesRoutes.js";
+import { authMiddleware } from "./utils/auth.js"
+
 
 dotenv.config();
 
@@ -26,7 +28,8 @@ app.use("/api/google-places", googlePlacesRoutes);
 app.use("/api/addresses", addressRoutes);
 
 // Set up Apollo Server
-const server = new ApolloServer({ typeDefs, resolvers });
+const server = new ApolloServer({ typeDefs, resolvers, context: ({ req }) => authMiddleware(req), });
+
 
 // Start the Apollo Server
 const startServer = async () => {
