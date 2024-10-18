@@ -1,0 +1,20 @@
+[
+  {
+    "address_line_1": "123 Main St",
+    "city": "Sample City",
+    "state": "CA",
+    "zip": "90210"
+  },
+  {
+    "address_line_1": "456 Elm St",
+    "city": "Example Town",
+    "state": "TX",
+    "zip": "73301"
+  },
+  {
+    "address_line_1": "789 Maple Ave",
+    "city": "Testville",
+    "state": "NY",
+    "zip": "10001"
+  }
+]
