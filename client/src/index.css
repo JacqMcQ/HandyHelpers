@@ -1,0 +1,28 @@
+/* Error Page Styles */
+.error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
+  background-color: #f8d7da; /* Light red background */
+  color: #721c24; /* Dark red text */
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.error-heading {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.error-message {
+  margin-bottom: 20px;
+}
+
+.error-link {
+  margin-top: 10px;
+  text-decoration: none;
+  color: #0056b3; /* Blue link color */
+}
