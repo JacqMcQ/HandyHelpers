@@ -1,0 +1,40 @@
+
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f8f9fa;
+  color: #333; 
+  margin: 0;
+  padding: 0;
+}
+
+/* Container for the Home component */
+.home-container {
+  text-align: center;
+  margin-top: 50px; 
+}
+
+/* Heading styles */
+h1 {
+  font-size: 2.5rem; 
+  margin-bottom: 20px; 
+}
+
+/* Button styles */
+button {
+  background-color: #007bff; 
+  color: white;
+  border: none; 
+  border-radius: 5px; 
+  padding: 10px 20px; 
+  font-size: 1rem; 
+  cursor: pointer;
+  margin: 5px; 
+  transition: background-color 0.3s; 
+}
+
+/* Button hover effect */
+button:hover {
+  background-color: #0056b3; 
+}
+
