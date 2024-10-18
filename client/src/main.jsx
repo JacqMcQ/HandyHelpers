@@ -12,6 +12,7 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import JobCenter from './pages/JobCenter';
 import Error from './pages/Error';
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -44,6 +45,7 @@ const router = createBrowserRouter([
     ]
   }
 ])
+
 ReactDOM.createRoot(document.getElementById('root')).render(
     <RouterProvider router={router} />
   );
