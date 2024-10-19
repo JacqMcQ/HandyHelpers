@@ -1,7 +1,7 @@
 const JobCenter = () => {
   return (
     <div>
-      <h1>Welcome to the Job Center</h1>
+      <h1 className="title">Welcome to the Job Center</h1>
       {}
     </div>
   );

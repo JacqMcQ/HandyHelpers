@@ -1,7 +1,7 @@
 const RepairServices = () => {
   return (
     <div>
-      <h1>Fix it!</h1>
+      <h1 className="title">Fix it!</h1>
       {}
     </div>
   );

@@ -2,7 +2,7 @@
 const Header = () => {
   return (
     <header>
-      <h1>Header Content</h1>
+      <h1 className="title">Handy Helpers</h1>
     </header>
   );
 };

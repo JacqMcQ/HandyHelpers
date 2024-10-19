@@ -1,5 +1,4 @@
 
-
 body {
   font-family: Arial, sans-serif;
   background-color: #f8f9fa;
@@ -12,6 +11,14 @@ body {
 .home-container {
   text-align: center;
   margin-top: 50px; 
+}
+
+header {
+  padding: 3rem;
+  background-color: #f8f9fa;
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
 /* Heading styles */
@@ -38,3 +45,25 @@ button:hover {
   background-color: #0056b3; 
 }
 
+input {
+  margin: 5px;
+}
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 10px 0;
+  z-index: 1000; /* Ensures the footer is above other content */
+}
+
+.footer-content {
+  padding: .4rem;
+}
+.footer-content p {
+  padding: .2rem;
+}
