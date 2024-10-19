@@ -1,8 +1,9 @@
-
+html {
+  background-color: #3b8de0;
+  color: #333; 
+}
 body {
   font-family: Arial, sans-serif;
-  background-color: #f8f9fa;
-  color: #333; 
   margin: 0;
   padding: 0;
 }
@@ -15,10 +16,19 @@ body {
 
 header {
   padding: 3rem;
-  background-color: #f8f9fa;
-  color: #333;
   text-align: center;
   margin-bottom: 20px;
+}
+
+.header-title {
+  color: aliceblue;
+  font-weight: bold;
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  line-height: 1.2;
+  word-spacing: 5px;
 }
 
 /* Heading styles */

@@ -1,6 +1,6 @@
 const RepairServices = () => {
   return (
-    <div>
+    <div className="box">
       <h1 className="title">Fix it!</h1>
       {}
     </div>

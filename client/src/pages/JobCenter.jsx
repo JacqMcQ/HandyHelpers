@@ -1,6 +1,6 @@
 const JobCenter = () => {
   return (
-    <div>
+    <div className="box">
       <h1 className="title">Welcome to the Job Center</h1>
       {}
     </div>
