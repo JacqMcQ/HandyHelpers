@@ -35,7 +35,7 @@ const CleaningServices = () => {
 
   return (
     <div>
-      <h1>Available Cleaning Services</h1>
+      <h1 className="title">Available Cleaning Services</h1>
       <ul>
         {services.map((service, index) => (
           <li key={index}>

@@ -41,8 +41,10 @@ function Signup() {
   };
 
   return (
-    <form onSubmit={handleSignup}>
+    <form className="box" onSubmit={handleSignup}>
+      <h2 className="title">Sign Up</h2>
       <input
+        className="input"
         type="text"
         placeholder="First Name"
         value={firstName}
@@ -50,6 +52,7 @@ function Signup() {
         required
       />
       <input
+        className="input"
         type="text"
         placeholder="Last Name"
         value={lastName}
@@ -57,6 +60,7 @@ function Signup() {
         required
       />
       <input
+        className="input"
         type="email"
         placeholder="Email"
         value={email}
@@ -64,14 +68,15 @@ function Signup() {
         required
       />
       <input
+        className="input"
         type="password"
         placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         required
       />
-      <button type="submit" disabled={loading}>
-        Sign Up
+      <button className="button" type="submit" disabled={loading}>
+        Submit
       </button>
       {error && <p>Error signing up!</p>}
     </form>

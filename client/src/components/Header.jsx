@@ -2,7 +2,9 @@
 const Header = () => {
   return (
     <header>
-      <h1>Header Content</h1>
+      <div className="header-container">
+      <h1 className="header-title">Handy Helpers</h1>
+      </div>
     </header>
   );
 };
