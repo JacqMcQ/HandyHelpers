@@ -9,9 +9,24 @@ import addressRoutes from "./routes/address.js";
 import googlePlacesRoutes from "./routes/googlePlacesRoutes.js";
 import { authMiddleware } from "./utils/auth.js";
 
+// Initialize dotenv
 dotenv.config();
 
-const app = express();
+const app = express(); // You need to define the `app` variable
+const isLocal = process.env.NODE_ENV !== "production"; // Change to your preferred condition
+
+// Set the MongoDB URI based on the environment
+const mongoURI = isLocal
+  ? process.env.MONGODB_URI_LOCAL
+  : process.env.MONGODB_URI_CLOUD;
+
+mongoose
+  .connect(mongoURI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("MongoDB connected!"))
+  .catch((err) => console.error("MongoDB connection error:", err));
 
 // Get __dirname equivalent
 const __filename = fileURLToPath(import.meta.url);
@@ -28,12 +43,6 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
 });
-
-// Connect to MongoDB
-mongoose
-  .connect(process.env.MONGODB_URI)
-  .then(() => console.log("MongoDB connected"))
-  .catch((err) => console.error("MongoDB connection error:", err));
 
 // REST API route for Google Places services
 app.use("/api/google-places", googlePlacesRoutes);
