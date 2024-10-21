@@ -21,7 +21,6 @@ const RepairServices = () => {
   }, []);
 
   return (
-handymen
     <div>
       <h1>Repair Services</h1>
       <ul>
@@ -35,6 +34,7 @@ handymen
     <div className="box">
       <h1 className="title">Fix it!</h1>
       {}
+    </div>
     </div>
   );
 };
