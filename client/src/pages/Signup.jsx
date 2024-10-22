@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useMutation } from "@apollo/client";
-import { SIGNUP } from "../mutations"; // Import the SIGNUP mutation
+import { SIGNUP } from "../utils/mutations"; // Import the SIGNUP mutation
 import Auth from "../utils/auth"; // Import AuthService
 
 function Signup() {
