@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import logo from "/images/logo.png";
 
 const Header = () => {
   return (
@@ -8,7 +9,7 @@ const Header = () => {
         <Link to="/">
           <figure className="image is-64x64">
             <img
-              src="/images/HHLogo.png"
+              src={logo}
               alt="Handy Helpers Logo"
               className="logo"
             />
