@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import logo from "/images/logo.png";
+import logo from "/images/HHLogo.png";
 import Auth from "../utils/auth";
 
 const Header = () => {
