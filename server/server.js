@@ -8,6 +8,7 @@ import { typeDefs, resolvers } from "./schemas/index.js";
 import addressRoutes from "./routes/address.js";
 import googlePlacesRoutes from "./routes/googlePlacesRoutes.js";
 import { authMiddleware } from "./utils/auth.js";
+import connect from "./config/connection.js";
 
 // Initialize dotenv
 dotenv.config();
@@ -15,18 +16,10 @@ dotenv.config();
 const app = express(); // You need to define the `app` variable
 const isLocal = process.env.NODE_ENV !== "production"; // Change to your preferred condition
 
-// Set the MongoDB URI based on the environment
-const mongoURI = isLocal
-  ? process.env.MONGODB_URI_LOCAL
-  : process.env.MONGODB_URI_CLOUD;
+// Set the MongoDB URI 
 
-mongoose
-  .connect(mongoURI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log("MongoDB connected!"))
-  .catch((err) => console.error("MongoDB connection error:", err));
+const db= await connect;
+
 
 // Get __dirname equivalent
 const __filename = fileURLToPath(import.meta.url);
@@ -72,9 +65,11 @@ const startServer = async () => {
   }
 
   // Start the Express server
-  app.listen(PORT, () => {
-    console.log(`API server running on port ${PORT}!`);
-    console.log(`Use GraphQL at http://localhost:${PORT}/graphql`);
+  db.once("open", () => {
+    app.listen(PORT, () => {
+      console.log(`API server running on port ${PORT}!`);
+      console.log(`Use GraphQL at http://localhost:${PORT}/graphql`);
+    });
   });
 };
 
