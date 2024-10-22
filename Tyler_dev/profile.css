@@ -1,32 +1,161 @@
-.userProfile{
+body{
 
     display:flex;
     flex-direction: column;
 
 }
 
-#userProfile_header{
+.navbar{
 
-    border:solid;
-    padding-left:50px;
-    padding-right:50px;
-    border-radius: 10px;
+    height:100px;
+    background-color: rgb(185, 185, 241);
 
 }
 
-#userProfiles_list{
-
-    border:solid;
-    height:200px;
-    padding:20px;
-
-}
-
-#userProfiles_listButtons{
+.profileUI{
 
     display:flex;
-    justify-content: space-around;
+    flex-direction: row;
 
 }
 
-.userProfile_button
+#profile_list{
+
+    border:solid;
+    height:500px;
+    width:400px;
+
+}
+
+#prompt{
+
+    margin-right:auto;
+    margin-left:auto;
+
+}
+
+#profileDisplay{
+
+    width:1500px;
+    display:flex;
+    justify-content: center;
+    flex-direction: column;
+
+}
+
+#profileCard{
+
+    background-color: rgb(204, 201, 201);
+    width:600px;
+    height:400px;
+    margin-left:auto;
+    margin-right:auto;
+    border-radius:10px;
+    display:flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    
+
+}
+
+#top{
+
+    display: flex;
+    flex-direction: row;
+
+}
+
+.text{
+
+    width:500px;
+    margin-left:auto;
+    margin-right:auto;
+
+}
+
+#add{
+
+    height:30px;
+    margin-top:auto;
+    margin-bottom: auto;
+    font-size: large;
+    border-radius: 10px;
+    border:none;
+    background-color: rgb(179, 165, 248);
+    color:white;
+    font-weight: 100;
+
+}
+
+#updateInfo{
+
+    margin-top:20px;
+
+    margin-left:auto;
+    margin-right:auto;
+    font-size: xx-large;
+    width:200px;
+    padding:10px;
+    border-radius:10px;
+    border:none;
+    background-color: rgb(179, 165, 248);
+    color:white;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
+
+}
+
+#updateInfo:hover{
+
+    background-color:rgb(229, 194, 244);
+    cursor: pointer;
+
+}
+
+#profileName{
+
+    margin-left:auto;
+    margin-right:auto;
+    height:50px;
+    font-size: x-large;
+
+}
+
+#profile_list{
+
+    background-color: rgba(0, 0, 0, 0.118);
+    border:none;
+    border-radius: 10px;
+    display:flex;
+    flex-direction: column;
+    align-content: center;
+
+}
+
+.profileButton{
+
+    width:300px;
+    margin-left: auto;
+    margin-right:auto;
+    margin-top:20px;
+    font-size:x-large;
+    padding:10px;
+    border-radius: 10px;
+    background-color: rgb(100, 81, 221);
+    color:white;
+    border:none;
+
+}
+
+.profileButton:hover{
+
+    background-color: blue;
+    cursor:pointer;
+
+}
+
+#add:hover{
+
+    cursor:pointer;
+    background-color:rgb(229, 194, 244);
+
+}
