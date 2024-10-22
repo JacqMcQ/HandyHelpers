@@ -37,46 +37,35 @@ const server = new ApolloServer({
   resolvers,
 });
 
-// Function to start the server
-const startServer = async () => {
-  try {
-    // Establish the database connection
-    await connect();
+// Create a new instance of an Apollo server with the GraphQL schema
+const startApolloServer = async () => {
+  await server.start();
 
-    // Initialize Apollo Server
-    const server = new ApolloServer({
-      typeDefs,
-      resolvers,
+  app.use(express.urlencoded({ extended: false }));
+  app.use(express.json());
+
+  // Serve up static assets
+  app.use('/images', express.static(path.join(__dirname, '../client/images')));
+
+  app.use('/graphql', expressMiddleware(server, {
+    context: authMiddleware
+  }));
+
+  if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, '../client/dist')));
+
+    app.get('*', (req, res) => {
+      res.sendFile(path.join(__dirname, '../client/dist/index.html'));
     });
+  }
 
-    await server.start();
-
-    // Apply Apollo GraphQL middleware
-    app.use(
-      "/graphql",
-      expressMiddleware(server, {
-        context: async ({ req }) => ({
-          user: await authMiddleware(req),
-        }),
-      })
-    );
-
-    // Serve static assets in production
-    if (process.env.NODE_ENV === "production") {
-      app.use(express.static(join(__dirname, "../client/dist")));
-      app.get("*", (req, res) => {
-        res.sendFile(join(__dirname, "../client/dist/index.html"));
-      });
-    }
-    // Start the server
+  db.once('open', () => {
     app.listen(PORT, () => {
       console.log(`API server running on port ${PORT}!`);
-      console.log(`GraphQL available at http://localhost:${PORT}/graphql`);
+      console.log(`Use GraphQL at http://localhost:${PORT}/graphql`);
     });
-  } catch (err) {
-    console.error("Error starting server:", err);
-  }
+  });
 };
 
-// Call the function to start the server
-startServer();
+// Call the async function to start the server
+startApolloServer();
