@@ -1,0 +1,32 @@
+.userProfile{
+
+    display:flex;
+    flex-direction: column;
+
+}
+
+#userProfile_header{
+
+    border:solid;
+    padding-left:50px;
+    padding-right:50px;
+    border-radius: 10px;
+
+}
+
+#userProfiles_list{
+
+    border:solid;
+    height:200px;
+    padding:20px;
+
+}
+
+#userProfiles_listButtons{
+
+    display:flex;
+    justify-content: space-around;
+
+}
+
+.userProfile_button
