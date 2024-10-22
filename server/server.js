@@ -1,35 +1,13 @@
 import express from "express";
-import { ApolloServer } from "apollo-server-express";
-import dotenv from "dotenv";
-import { fileURLToPath } from "url";
-import { dirname, join } from "path";
-import { typeDefs, resolvers } from "./schemas/index.js";
-import addressRoutes from "./routes/address.js";
-import googlePlacesRoutes from "./routes/googlePlacesRoutes.js";
+import { ApolloServer } from "@apollo/server";
+import { expressMiddleware } from "@apollo/server/express4";
+import path from "path";
 import { authMiddleware } from "./utils/auth.js";
-import connect from "./config/connection.js";
+import { typeDefs, resolvers } from "./schemas/index.js";
+import connect from "./config/connection.js"; // Import the connect function
 
-// Initialize dotenv
-dotenv.config();
-
-const app = express(); // You need to define the `app` variable
-
-// Get __dirname equivalent
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-// Set the port
 const PORT = process.env.PORT || 3001;
-
-// Middleware to parse JSON
-app.use(express.json());
-
-// REST API route for Google Places services
-app.use("/api/google-places", googlePlacesRoutes);
-
-// Route to retrieve addresses from the database
-app.use("/api/addresses", addressRoutes);
-
+const app = express();
 const server = new ApolloServer({
   typeDefs,
   resolvers,
@@ -37,13 +15,13 @@ const server = new ApolloServer({
 
 // Create a new instance of an Apollo server with the GraphQL schema
 const startApolloServer = async () => {
+  // Connect to the database
+  await connect(); // Wait for the database connection
+
   await server.start();
 
   app.use(express.urlencoded({ extended: false }));
   app.use(express.json());
-
-  // Serve up static assets
-  app.use("/images", express.static(path.join(__dirname, "../client/images")));
 
   app.use(
     "/graphql",
@@ -53,18 +31,17 @@ const startApolloServer = async () => {
   );
 
   if (process.env.NODE_ENV === "production") {
-    app.use(express.static(path.join(__dirname, "../client/dist")));
+    app.use(express.static(path.join(process.cwd(), "client/dist"))); // Adjusted path to be relative to the current working directory
 
     app.get("*", (req, res) => {
-      res.sendFile(path.join(__dirname, "../client/dist/index.html"));
+      res.sendFile(path.join(process.cwd(), "client/dist/index.html")); // Adjusted path to be relative to the current working directory
     });
   }
 
-  db.once("open", () => {
-    app.listen(PORT, () => {
-      console.log(`API server running on port ${PORT}!`);
-      console.log(`Use GraphQL at http://localhost:${PORT}/graphql`);
-    });
+  // Start the Express server after the database connection is established
+  app.listen(PORT, () => {
+    console.log(`API server running on port ${PORT}!`);
+    console.log(`Use GraphQL at http://localhost:${PORT}/graphql`);
   });
 };
 
