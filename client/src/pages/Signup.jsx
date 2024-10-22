@@ -1,40 +1,25 @@
 import React, { useState } from "react";
 import { useMutation } from "@apollo/client";
-import gql from "graphql-tag";
-
-const SIGNUP_USER = gql`
-  mutation Signup(
-    $firstName: String!
-    $lastName: String!
-    $email: String!
-    $password: String!
-  ) {
-    signup(
-      firstName: $firstName
-      lastName: $lastName
-      email: $email
-      password: $password
-    ) {
-      id
-      firstName
-      lastName
-      email
-    }
-  }
-`;
+import { SIGNUP } from "../mutations"; // Import the SIGNUP mutation
+import Auth from "../utils/auth"; // Import AuthService
 
 function Signup() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [signup, { data, loading, error }] = useMutation(SIGNUP_USER);
+  const [username, setUsername] = useState(""); // Add username state
+  const [signup, { data, loading, error }] = useMutation(SIGNUP);
 
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      await signup({ variables: { firstName, lastName, email, password } });
-      // Handle post-signup actions (like redirecting)
+      const { data } = await signup({
+        variables: { firstName, lastName, email, password, username }, // Include username
+      });
+      // Save the token after successful signup
+      Auth.login(data.signup.token); // Use AuthService to log the user in
+      // Optionally, redirect to another page here
     } catch (err) {
       console.error(err);
     }
@@ -57,6 +42,14 @@ function Signup() {
         placeholder="Last Name"
         value={lastName}
         onChange={(e) => setLastName(e.target.value)}
+        required
+      />
+      <input
+        className="input"
+        type="text"
+        placeholder="Username" // Add username input
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
         required
       />
       <input
