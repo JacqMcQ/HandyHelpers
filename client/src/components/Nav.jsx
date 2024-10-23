@@ -12,13 +12,13 @@ const Nav = () => {
             <Link to="/profile">Profile</Link>
           </li>
           <li className="navbar-link">
-            <Link to="/jobcenter">Job Center</Link>
+            <Link to="/job-center">Job Center</Link>
           </li>
           <li className="navbar-link">
-            <Link to="/cleaningservices">Cleaning Services</Link>
+            <Link to="/cleaning-services">Cleaning Services</Link>
           </li>
           <li className="navbar-link">
-            <Link to="/repairservices">Repair Services</Link>
+            <Link to="/repair-services">Repair Services</Link>
           </li>
           <li className="navbar-link">
             <a href="/" onClick={() => Auth.logout()}>
