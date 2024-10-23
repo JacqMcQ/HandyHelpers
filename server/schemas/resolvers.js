@@ -62,7 +62,7 @@ const resolvers = {
           throw new AuthenticationError("User not found");
         }
 
-        const isValidPassword = await user.isCorrectPassword(password);
+        const isValidPassword = await user.comparePassword(password);
         if (!isValidPassword) {
           throw new AuthenticationError("Invalid credentials");
         }
