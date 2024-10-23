@@ -18,6 +18,7 @@ export const GET_ADDRESSES = gql`
   query getAddresses {
     getAddresses {
       _id
+      nickname
       address_line_1
       city
       state

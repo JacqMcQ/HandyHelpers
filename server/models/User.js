@@ -24,6 +24,11 @@ const UserSchema = new mongoose.Schema({
     required: true,
     unique: true, 
   },
+  addresses: [{
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: "Address",
+    required: true,  // Ensure each user has at least one address
+  }]
 });
 
 // Hash the password before saving
