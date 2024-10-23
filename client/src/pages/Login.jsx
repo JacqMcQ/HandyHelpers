@@ -1,27 +1,32 @@
 import { useState } from "react";
 import { useMutation } from "@apollo/client";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
 import { LOGIN } from "../utils/mutations";
 import Auth from "../utils/auth";
 
 function Login(props) {
   const [formState, setFormState] = useState({ email: "", password: "" });
   const [login, { error }] = useMutation(LOGIN);
+  const navigate = useNavigate(); // Initialize navigate
 
-  const handleFormSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      const mutationResponse = await login({
-        variables: { email: formState.email, password: formState.password },
-      });
+const handleFormSubmit = async (event) => {
+  event.preventDefault();
+  try {
+    const mutationResponse = await login({
+      variables: { email: formState.email, password: formState.password },
+    });
 
-      const token = mutationResponse.data.login.token;
-      Auth.login(token);
-    } catch (e) {
-      console.log(e);
+    const token = mutationResponse.data.login.token;
+    Auth.login(token);
+
+    // After the token is saved and user is logged in, redirect
+    if (Auth.loggedIn()) {
+      navigate("/profile");
     }
-  };
-
+  } catch (e) {
+    console.log(e);
+  }
+};
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormState({
@@ -65,7 +70,7 @@ function Login(props) {
             Submit
           </button>
         </div>
-        <p>Dont have an account? Sign up here!</p>
+        <p>Don't have an account? Sign up here!</p>
         <Link className="button" to="/signup">
           Signup
         </Link>
