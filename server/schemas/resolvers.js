@@ -1,95 +1,137 @@
-import { User, Address, Service } from "../models/index.js"; // Import models using destructured imports
+import { User, Address, Service } from "../models/index.js";
 import { AuthenticationError } from "apollo-server-express";
 import { signToken } from "../utils/auth.js";
 
 const resolvers = {
   Query: {
-    getUsers: async () => await User.find(),
-    getAddresses: async () => await Address.find().populate("user"), // Populate to get user details
-    getServices: async () => await Service.find(), // Get all services from the database
+    getUsers: async () => {
+      try {
+        return await User.find();
+      } catch (error) {
+        console.error(error);
+        throw new Error("Failed to fetch users");
+      }
+    },
+    getAddresses: async () => {
+      try {
+        return await Address.find().populate("user");
+      } catch (error) {
+        console.error(error);
+        throw new Error("Failed to fetch addresses");
+      }
+    },
+    getServices: async () => {
+      try {
+        return await Service.find();
+      } catch (error) {
+        console.error(error);
+        throw new Error("Failed to fetch services");
+      }
+    },
   },
+
   Mutation: {
     signup: async (_, { firstName, lastName, email, password, username }) => {
+      try {
+        const userExists = await User.findOne({ email });
+        if (userExists) {
+          throw new AuthenticationError("User with this email already exists");
+        }
 
-      const userExists = await User.findOne({ email });
-      if (userExists) {
-        throw new AuthenticationError("User with this email already exists");
+        const newUser = new User({
+          firstName,
+          lastName,
+          email,
+          password,
+          username,
+        });
+        await newUser.save();
+
+        const token = signToken(newUser);
+        return { token, user: newUser };
+      } catch (error) {
+        console.error(error);
+        throw new Error("Signup failed");
       }
-
-      const newUser = new User({
-        firstName,
-        lastName,
-        email,
-        password,
-        username,
-      });
-      await newUser.save();
-
-      const token = signToken(newUser);
-
-      return { token, user: newUser };
     },
 
     login: async (_, { email, password }) => {
-      const user = await User.findOne({ email });
-      if (!user) {
-        throw new AuthenticationError("User not found");
+      try {
+        const user = await User.findOne({ email });
+        if (!user) {
+          throw new AuthenticationError("User not found");
+        }
+
+        const isValidPassword = await user.isCorrectPassword(password);
+        if (!isValidPassword) {
+          throw new AuthenticationError("Invalid credentials");
+        }
+
+        const token = signToken(user);
+        return { token, user };
+      } catch (error) {
+        console.error(error);
+        throw new Error("Login failed");
       }
-
-      const isValidPassword = await user.isCorrectPassword(password);
-      if (!isValidPassword) {
-        throw new AuthenticationError("Invalid credentials");
-      }
-
-      const token = signToken(user);
-
-      return { token, user };
     },
 
- async addAddress(_, { address_line_1, city, state, zip, userId }) {
-      // Find the user by ID
-      const user = await User.findById(userId);
-      if (!user) {
-        throw new AuthenticationError("User not found");
+    addAddress: async (_, { address_line_1, city, state, zip, userId }) => {
+      try {
+        const user = await User.findById(userId);
+        if (!user) {
+          throw new AuthenticationError("User not found");
+        }
+
+        const address = new Address({
+          address_line_1,
+          city,
+          state,
+          zip,
+          user: userId,
+        });
+
+        await address.save();
+
+        return {
+          id: address._id.toString(),
+          address_line_1,
+          city,
+          state,
+          zip,
+          user: {
+            id: user._id.toString(),
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+          },
+        };
+      } catch (error) {
+        console.error(error);
+        throw new Error("Failed to add address");
       }
-
-      // Create the new address
-      const address = new Address({
-        address_line_1,
-        city,
-        state,
-        zip,
-        user: userId, // Assuming userId is being passed correctly
-      });
-
-      // Save the address to the database
-      await address.save();
-
-      // Return the address with the user ID converted to a string
-      return {
-        id: address._id.toString(),
-        address_line_1,
-        city,
-        state,
-        zip,
-        user: {
-          id: user._id.toString(), // Convert user ID to string
-          firstName: user.firstName,
-          lastName: user.lastName,
-          email: user.email,
-        },
-      };
     },
 
-addService: async (_, { name, description, price }) => {
-      const newService = new Service({ name, description, price });
-      await newService.save();
-      return newService; 
+    addService: async (_, { name, description, price }) => {
+      try {
+        const newService = new Service({ name, description, price });
+        await newService.save();
+        return newService;
+      } catch (error) {
+        console.error(error);
+        throw new Error("Failed to add service");
+      }
     },
   },
 
   User: {
-    addresses: async (user) => await Address.find({ user: user.id }), 
+    addresses: async (user) => {
+      try {
+        return await Address.find({ user: user.id });
+      } catch (error) {
+        console.error(error);
+        throw new Error("Failed to fetch addresses for user");
+      }
+    },
   },
 };
 
