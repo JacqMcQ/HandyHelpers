@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useMutation } from "@apollo/client";
 import { SIGNUP } from "../utils/mutations"; // Import the SIGNUP mutation
 import Auth from "../utils/auth"; // Import AuthService
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 function Signup() {
   const [firstName, setFirstName] = useState("");
@@ -11,6 +12,8 @@ function Signup() {
   const [username, setUsername] = useState(""); // Add username state
   const [signup, { data, loading, error }] = useMutation(SIGNUP);
 
+  const navigate = useNavigate(); // Initialize navigate
+
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
@@ -19,7 +22,9 @@ function Signup() {
       });
       // Save the token after successful signup
       Auth.login(data.signup.token); // Use AuthService to log the user in
-      // Optionally, redirect to another page here
+
+      // Redirect to profile page
+      navigate("/profile");
     } catch (err) {
       console.error(err);
     }
