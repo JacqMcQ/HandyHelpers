@@ -21,6 +21,10 @@ const Nav = () => {
             <Link to="/repair-services">Repair Services</Link>
           </li>
           <li className="navbar-link">
+            <Link to="/landscape-services">Landscaping Services</Link>
+          </li>
+
+          <li className="navbar-link">
             <a href="/" onClick={() => Auth.logout()}>
               Logout
             </a>

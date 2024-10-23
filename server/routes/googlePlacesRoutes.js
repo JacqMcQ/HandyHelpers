@@ -12,4 +12,7 @@ router.get("/", getCleaningServices);
 // Route to get handyman services
 router.get("/handyman", getHandymanServices);
 
+// Route to get landscaping services
+router.get("/landscaping", getHandymanServices); 
+
 export default router;
