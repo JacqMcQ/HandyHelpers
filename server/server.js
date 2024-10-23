@@ -5,7 +5,10 @@ import path from "path";
 import { authMiddleware } from "./utils/auth.js";
 import { typeDefs, resolvers } from "./schemas/index.js";
 import connect from "./config/connection.js"; // Import the connect function
+import dotenv from "dotenv";
 
+dotenv.config(); 
+console.log("JWT Secret", process.env.JWT_SECRET);
 const PORT = process.env.PORT || 3001;
 const app = express();
 const server = new ApolloServer({

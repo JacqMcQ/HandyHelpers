@@ -2,7 +2,7 @@ import { gql } from "apollo-server-express";
 
 const typeDefs = gql`
   type User {
-    id: ID!
+    _id: ID!
     firstName: String!
     lastName: String!
     email: String!
@@ -10,8 +10,13 @@ const typeDefs = gql`
     addresses: [Address]
   }
 
+  type Auth {
+    token: String!
+    user: User!
+  }
+
   type Address {
-    id: ID!
+    _id: ID!
     address_line_1: String!
     city: String!
     state: String!
@@ -20,7 +25,7 @@ const typeDefs = gql`
   }
 
   type Service {
-    id: ID!
+    _id: ID!
     name: String!
     description: String
     price: Float
@@ -28,7 +33,7 @@ const typeDefs = gql`
   }
 
   type Job {
-    id: ID!
+    _id: ID!
     title: String!
     description: String
     services: [Service]
@@ -49,11 +54,8 @@ const typeDefs = gql`
       username: String! # Add username argument here
     ): Auth
 
-    login(
-      email: String!
-      password: String!
-    ): Auth
-    
+    login(email: String!, password: String!): Auth
+
     addAddress(
       address_line_1: String!
       city: String!
@@ -61,17 +63,8 @@ const typeDefs = gql`
       zip: String!
       userId: ID!
     ): Address!
-    
-    addService(
-    name: String!,
-    description: String, 
-    price: Float
-    ): Service
-  }
 
-  type Auth {
-    token: String!
-    user: User!
+    addService(name: String!, description: String, price: Float): Service
   }
 `;
 

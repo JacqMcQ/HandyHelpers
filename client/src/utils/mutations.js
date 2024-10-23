@@ -16,6 +16,10 @@ export const SIGNUP = gql`
       username: $username
     ) {
       token
+      user {
+        _id
+        username
+      }
     }
   }
 `;
