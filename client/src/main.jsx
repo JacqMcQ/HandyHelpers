@@ -7,6 +7,8 @@ import App from "./App.jsx";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import CleaningServices from "./pages/CleaningServices";
+import LandscapeServices from "./pages/LandscapeServices";
+
 import RepairServices from "./pages/RepairServices";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -24,11 +26,11 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "login", 
+        path: "login",
         element: <Login />,
       },
       {
-        path: "signup", 
+        path: "signup",
         element: <Signup />,
       },
       {
@@ -36,7 +38,7 @@ const router = createBrowserRouter([
         element: <Profile />,
       },
       {
-        path: "job-center", 
+        path: "job-center",
         element: <JobCenter />,
       },
       {
@@ -44,8 +46,12 @@ const router = createBrowserRouter([
         element: <CleaningServices />,
       },
       {
-        path: "repair-services", 
+        path: "repair-services",
         element: <RepairServices />,
+      },
+      {
+        path: "landscape-services",
+        element: <LandscapeServices />,
       },
     ],
   },

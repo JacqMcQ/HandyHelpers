@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const RepairServices = () => {
+const LandscapeServices = () => {
   const [services, setServices] = useState([]);
   const [zipCode, setZipCode] = useState("");
   const [location, setLocation] = useState(null);
@@ -31,7 +31,12 @@ const RepairServices = () => {
         }
       );
 
+      console.log("Response Status:", response.status);
+      console.log("API Response:", response.data);
+
       const results = response.data.results;
+      console.log("Results Array:", results);
+
       if (results.length === 0) {
         console.error("No results found for this ZIP code.");
         setErrorMessage("No results found for this ZIP code.");
@@ -39,6 +44,8 @@ const RepairServices = () => {
       }
 
       const location = results[0]?.geometry?.location;
+      console.log("Location Data:", location);
+
       if (location) {
         setLocation(`${location.lat},${location.lng}`);
         setErrorMessage("");
@@ -51,31 +58,44 @@ const RepairServices = () => {
     }
   };
 
-  const fetchRepairServices = async (locationString) => {
+  const fetchLandscapeServices = async (locationString) => {
     if (!locationString) return;
 
     try {
       const [lat, lng] = locationString.split(",");
-      console.log("Fetching repair services with coordinates:", lat, lng);
+      console.log("Fetching services with coordinates:", lat, lng);
 
       const response = await axios.get(
-        `http://localhost:3001/api/google-places/handyman`,
+        "http://localhost:3001/api/google-places",
         {
           params: {
             location: `${lat},${lng}`,
             radius: 5000,
+            keyword: "landscaping", // Change keyword to 'landscaping'
           },
         }
       );
 
+      console.log("Landscape Services API Response:", response.data);
+
       if (response.data && response.data.length > 0) {
-        setServices(response.data);
+        const services = response.data.map((service) => ({
+          name: service.name,
+          description: service.description || "No description available", // Assuming description is part of the response
+          price: service.price || "N/A", // Assuming price is part of the response
+          address: service.vicinity, // Use vicinity for address
+          lat: service.geometry?.location?.lat, // Access lat directly
+          lng: service.geometry?.location?.lng, // Access lng directly
+        }));
+        setServices(services);
       } else {
         setErrorMessage("No services found for this location.");
       }
     } catch (error) {
       console.error("Error fetching services:", error);
-      setErrorMessage("Failed to fetch repair services. Please try again.");
+      setErrorMessage(
+        "Failed to fetch landscaping services. Please try again."
+      );
     }
   };
 
@@ -90,48 +110,53 @@ const RepairServices = () => {
 
   useEffect(() => {
     if (location) {
-      fetchRepairServices(location);
+      fetchLandscapeServices(location);
     }
   }, [location]);
 
   return (
     <div className="container">
-      <h1 className="title has-text-centered">Repair Services</h1>
-      <form onSubmit={handleSearch}>
-        <input
-          type="text"
-          placeholder="Enter ZIP code"
-          value={zipCode}
-          onChange={handleZipCodeChange}
-          className="input"
-        />
-        <button type="submit" className="button is-primary">
-          Search
-        </button>
+      <h1 className="title has-text-centered">
+        Find Landscaping Services in Your Area
+      </h1>
+      <form onSubmit={handleSearch} className="field has-addons">
+        <div className="control is-expanded">
+          <input
+            className="input"
+            type="text"
+            placeholder="Enter ZIP code"
+            value={zipCode}
+            onChange={handleZipCodeChange}
+          />
+        </div>
+        <div className="control">
+          <button className="button is-primary" type="submit">
+            Search
+          </button>
+        </div>
       </form>
-      {errorMessage && <p className="error">{errorMessage}</p>}
+
+      {errorMessage && <p className="notification is-danger">{errorMessage}</p>}
+
       <ul className="service-list">
-        {services.length > 0 ? (
+        {Array.isArray(services) && services.length > 0 ? (
           services.map((service, index) => (
-            <li key={`${service.place_id}-${index}`} className="box">
-              <h3 className="title is-4">{service.name}</h3>
-              <p className="subtitle is-6">{service.vicinity}</p>
-              <p className="address">
-                {service.description || "No description available."}
-              </p>{" "}
-              {/* Displaying the description */}
+            <li key={index} className="box">
+              <h2 className="title is-4">{service.name}</h2>
+              <p className="subtitle is-6">Address: {service.address}</p>
+              <p>Description: {service.description}</p>
+              <p>Price: {service.price}</p>
+              <p>
+                Location: Lat: {service.lat}, Lng: {service.lng}
+              </p>
             </li>
           ))
         ) : (
-          <p>No repair services found for this location.</p>
+          <p>No landscaping services found for this location.</p>
         )}
-      </ul>{" "}
-      <div className="box">
-        <h1 className="title">Fix it!</h1>
-        <p>Explore the best options for your repair needs.</p>
-      </div>
+      </ul>
     </div>
   );
 };
 
-export default RepairServices;
+export default LandscapeServices;
