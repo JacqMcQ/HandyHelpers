@@ -75,7 +75,7 @@ const resolvers = {
       }
     },
 
-    addAddress: async (_, { address_line_1, city, state, zip, userId }) => {
+    addAddress: async (_, { nickname, address_line_1, city, state, zip, userId }) => {
       try {
         const user = await User.findById(userId);
         if (!user) {
@@ -83,6 +83,7 @@ const resolvers = {
         }
 
         const address = new Address({
+          nickname,
           address_line_1,
           city,
           state,
@@ -94,6 +95,7 @@ const resolvers = {
 
         return {
           id: address._id.toString(),
+          nickname,
           address_line_1,
           city,
           state,

@@ -17,6 +17,7 @@ const typeDefs = gql`
 
   type Address {
     _id: ID!
+    nickname: String! # Add nickname field here
     address_line_1: String!
     city: String!
     state: String!
@@ -57,6 +58,7 @@ const typeDefs = gql`
     login(email: String!, password: String!): Auth
 
     addAddress(
+      nickname: String! # Add nickname argument here
       address_line_1: String!
       city: String!
       state: String!

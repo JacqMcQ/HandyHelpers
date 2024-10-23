@@ -28,13 +28,14 @@ const Profile = () => {
   return (
     <div className="box">
       <h1 className="title">User Profile</h1>
-      <form onSubmit={handleSubmit}>
+      <form className="form" onSubmit={handleSubmit}>
         {addresses.map((address, index) => (
           <div key={index} className="address-form">
-            <h2>Address {index + 1}</h2>
+            <h2 className="subtitle">Address {index + 1}</h2>
             <label>
               Nickname:
               <input
+                className="input"
                 type="text"
                 name="nickname"
                 value={address.nickname}
@@ -45,6 +46,7 @@ const Profile = () => {
             <label>
               Street:
               <input
+                className="input"
                 type="text"
                 name="street"
                 value={address.street}
@@ -55,6 +57,7 @@ const Profile = () => {
             <label>
               City:
               <input
+                className="input"
                 type="text"
                 name="city"
                 value={address.city}
@@ -65,6 +68,7 @@ const Profile = () => {
             <label>
               State:
               <input
+                className="input"
                 type="text"
                 name="state"
                 value={address.state}
@@ -75,6 +79,7 @@ const Profile = () => {
             <label>
               Zip Code:
               <input
+                className="input"
                 type="text"
                 name="zip"
                 value={address.zip}
@@ -85,6 +90,7 @@ const Profile = () => {
             <label>
               Country:
               <input
+                className="input"
                 type="text"
                 name="country"
                 value={address.country}
@@ -94,10 +100,10 @@ const Profile = () => {
             </label>
           </div>
         ))}
-        <button type="button" onClick={addAddress}>
+        <button className="button" type="button" onClick={addAddress}>
           Add Another Address
         </button>
-        <button type="submit">Submit</button>
+        <button className="button" type="submit">Submit</button>
       </form>
     </div>
   );

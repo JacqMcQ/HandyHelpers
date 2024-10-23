@@ -35,3 +35,27 @@ export const LOGIN = gql`
     }
   }
 `;
+
+export const ADD_ADDRESSES = gql`
+  mutation add_address(
+    $nickname: String
+    $address_line_1: String!
+    $city: String!
+    $state: String!
+    $zip: String!
+    $userId: ID!
+  ) {
+    add_address(
+      address_line_1: $address_line_1
+      city: $city
+      state: $state
+      zip: $zip
+    ) {
+      token
+      user {
+        _id
+        username
+      }
+    }
+  }
+`;
