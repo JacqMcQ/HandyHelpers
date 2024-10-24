@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useMutation } from "@apollo/client";
-import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
+import { Link, useNavigate } from "react-router-dom";
 import { LOGIN } from "../utils/mutations";
 import Auth from "../utils/auth";
 
@@ -9,24 +9,27 @@ function Login(props) {
   const [login, { error }] = useMutation(LOGIN);
   const navigate = useNavigate(); // Initialize navigate
 
-const handleFormSubmit = async (event) => {
-  event.preventDefault();
-  try {
-    const mutationResponse = await login({
-      variables: { email: formState.email, password: formState.password },
-    });
+  const handleFormSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const mutationResponse = await login({
+        variables: { email: formState.email, password: formState.password },
+      });
 
-    const token = mutationResponse.data.login.token;
-    Auth.login(token);
+      const token = mutationResponse.data.login.token;
+      Auth.login(token);
 
-    // After the token is saved and user is logged in, redirect
-    if (Auth.loggedIn()) {
+      // Dispatch custom event to notify components about login status change
+      const event = new Event("loginStatusChanged");
+      window.dispatchEvent(event);
+
+      // Redirect to profile page after login
       navigate("/profile");
+    } catch (e) {
+      console.log(e);
     }
-  } catch (e) {
-    console.log(e);
-  }
-};
+  };
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormState({

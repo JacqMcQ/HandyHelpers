@@ -1,29 +1,42 @@
 import React, { useState } from "react";
 import { useMutation } from "@apollo/client";
-import { SIGNUP } from "../utils/mutations"; // Import the SIGNUP mutation
-import Auth from "../utils/auth"; // Import AuthService
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { SIGNUP } from "../utils/mutations";
+import Auth from "../utils/auth";
+import { useNavigate } from "react-router-dom";
 
 function Signup() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [username, setUsername] = useState(""); // Add username state
-  const [signup, { data, loading, error }] = useMutation(SIGNUP);
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [passwordError, setPasswordError] = useState("");
 
-  const navigate = useNavigate(); // Initialize navigate
+  const [signup, { loading, error }] = useMutation(SIGNUP);
+  const navigate = useNavigate();
 
   const handleSignup = async (e) => {
     e.preventDefault();
+
+    // Check if passwords match
+    if (password !== confirmPassword) {
+      setPasswordError("Passwords do not match!");
+      return;
+    }
+
     try {
       const { data } = await signup({
-        variables: { firstName, lastName, email, password, username }, // Include username
+        variables: { firstName, lastName, email, password, username },
       });
-      // Save the token after successful signup
-      Auth.login(data.signup.token); // Use AuthService to log the user in
 
-      // Redirect to profile page
+      Auth.login(data.signup.token);
+
+      // Dispatch custom event to notify components about login status change
+      const event = new Event("loginStatusChanged");
+      window.dispatchEvent(event);
+
+      // Redirect to profile page after signup
       navigate("/profile");
     } catch (err) {
       console.error(err);
@@ -52,7 +65,7 @@ function Signup() {
       <input
         className="input"
         type="text"
-        placeholder="Username" // Add username input
+        placeholder="Username"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
         required
@@ -73,6 +86,15 @@ function Signup() {
         onChange={(e) => setPassword(e.target.value)}
         required
       />
+      <input
+        className="input"
+        type="password"
+        placeholder="Confirm Password"
+        value={confirmPassword}
+        onChange={(e) => setConfirmPassword(e.target.value)}
+        required
+      />
+      {passwordError && <p style={{ color: "red" }}>{passwordError}</p>}
       <button className="button" type="submit" disabled={loading}>
         Submit
       </button>
