@@ -6,27 +6,32 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      registerType: 'autoUpdate',
-      injectRegister: 'auto',
-      strategies: 'injectManifest',
-      srcDir: 'src',
-      filename: 'src-sw.js',
-      includeAssets: ['favicon.svg', 'favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
+      registerType: "autoUpdate",
+      injectRegister: "auto",
+      strategies: "injectManifest",
+      srcDir: "src",
+      filename: "src-sw.js",
+      includeAssets: [
+        "favicon.svg",
+        "favicon.ico",
+        "robots.txt",
+        "apple-touch-icon.png",
+      ],
       manifest: {
-        name: 'HandyHelpers',
-        short_name: 'HandyHelpers',
-        description: 'An application to find and book local home services',
-        theme_color: '#ffffff',
+        name: "HandyHelpers",
+        short_name: "HandyHelpers",
+        description: "An application to find and book local home services",
+        theme_color: "#ffffff",
         icons: [
           {
-            src: 'pwa-192x192.png',
-            sizes: '192x192',
-            type: 'image/png',
+            src: "pwa-192x192.png",
+            sizes: "192x192",
+            type: "image/png",
           },
           {
-            src: 'pwa-512x512.png',
-            sizes: '512x512',
-            type: 'image/png',
+            src: "pwa-512x512.png",
+            sizes: "512x512",
+            type: "image/png",
           },
         ],
       },
@@ -34,10 +39,10 @@ export default defineConfig({
         runtimeCaching: [
           {
             urlPattern: ({ request }) =>
-              ['style', 'script', 'worker'].includes(request.destination),
-            handler: 'StaleWhileRevalidate',
+              ["style", "script", "worker"].includes(request.destination),
+            handler: "StaleWhileRevalidate",
             options: {
-              cacheName: 'asset-cache',
+              cacheName: "asset-cache",
               expiration: {
                 maxEntries: 60,
                 maxAgeSeconds: 30 * 24 * 60 * 60, // 30 days
@@ -48,7 +53,7 @@ export default defineConfig({
       },
     }),
   ],
-  base: "/",
+  base: "./",
   server: {
     port: 3000,
     open: true,
@@ -68,7 +73,7 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: "dist",
+    outDir: "client/dist",
   },
   test: {
     globals: true,
