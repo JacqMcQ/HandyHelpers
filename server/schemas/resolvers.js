@@ -4,136 +4,77 @@ import { signToken } from "../utils/auth.js";
 
 const resolvers = {
   Query: {
-    getUsers: async () => {
-      try {
-        return await User.find();
-      } catch (error) {
-        console.error(error);
-        throw new Error("Failed to fetch users");
-      }
+    getUsers: async () => await User.find(),
+    getAddresses: async (_, __, { user }) => {
+      if (!user) throw new AuthenticationError("Authentication required");
+      return await Address.find({ user: user._id }).populate("user");
     },
-    getAddresses: async () => {
-      try {
-        return await Address.find().populate("user");
-      } catch (error) {
-        console.error(error);
-        throw new Error("Failed to fetch addresses");
-      }
-    },
-    getServices: async () => {
-      try {
-        return await Service.find();
-      } catch (error) {
-        console.error(error);
-        throw new Error("Failed to fetch services");
-      }
-    },
+    getServices: async () => await Service.find(),
   },
-
   Mutation: {
     signup: async (_, { firstName, lastName, email, password, username }) => {
-      try {
-        const userExists = await User.findOne({ email });
-        if (userExists) {
-          throw new AuthenticationError("User with this email already exists");
-        }
+      const userExists = await User.findOne({ email });
+      if (userExists)
+        throw new AuthenticationError("User with this email already exists");
 
-        const newUser = new User({
-          firstName,
-          lastName,
-          email,
-          password,
-          username,
-        });
-        await newUser.save();
+      const newUser = new User({
+        firstName,
+        lastName,
+        email,
+        password,
+        username,
+      });
+      await newUser.save();
 
-        const token = signToken(newUser);
-        return { token, user: newUser };
-      } catch (error) {
-        console.error(error);
-        throw new Error("Signup failed");
-      }
+      const token = signToken(newUser);
+      return { token, user: newUser };
     },
 
     login: async (_, { email, password }) => {
-      try {
-        const user = await User.findOne({ email });
-        if (!user) {
-          throw new AuthenticationError("User not found");
-        }
+      const user = await User.findOne({ email });
+      if (!user || !(await user.comparePassword(password)))
+        throw new AuthenticationError("Invalid credentials");
 
-        const isValidPassword = await user.comparePassword(password);
-        if (!isValidPassword) {
-          throw new AuthenticationError("Invalid credentials");
-        }
-
-        const token = signToken(user);
-        return { token, user };
-      } catch (error) {
-        console.error(error);
-        throw new Error("Login failed");
-      }
+      const token = signToken(user);
+      return { token, user };
     },
 
-    addAddress: async (_, { nickname, address_line_1, city, state, zip, userId }) => {
-      try {
-        const user = await User.findById(userId);
-        if (!user) {
-          throw new AuthenticationError("User not found");
-        }
+    addAddress: async (
+      _,
+      { nickname, address_line_1, city, state, zip, country },
+      context
+    ) => {
+      if (!context.user) {
+        throw new AuthenticationError("Authentication required");
+      }
 
-        const address = new Address({
+      try {
+        const newAddress = await Address.create({
           nickname,
           address_line_1,
           city,
           state,
           zip,
-          user: userId,
+          country,
+          user: context.user._id,
         });
 
-        await address.save();
-
-        return {
-          id: address._id.toString(),
-          nickname,
-          address_line_1,
-          city,
-          state,
-          zip,
-          user: {
-            id: user._id.toString(),
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email,
-          },
-        };
+        // Optionally, populate user in the response
+        return await Address.findById(newAddress._id).populate("user");
       } catch (error) {
-        console.error(error);
-        throw new Error("Failed to add address");
+        throw new Error("Failed to create address: " + error.message);
       }
     },
-
+    
     addService: async (_, { name, description, price }) => {
-      try {
-        const newService = new Service({ name, description, price });
-        await newService.save();
-        return newService;
-      } catch (error) {
-        console.error(error);
-        throw new Error("Failed to add service");
-      }
+      const newService = new Service({ name, description, price });
+      await newService.save();
+      return newService;
     },
   },
 
   User: {
-    addresses: async (user) => {
-      try {
-        return await Address.find({ user: user.id });
-      } catch (error) {
-        console.error(error);
-        throw new Error("Failed to fetch addresses for user");
-      }
-    },
+    addresses: async (user) => await Address.find({ user: user._id }),
   },
 };
 
