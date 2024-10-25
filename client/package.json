@@ -23,6 +23,7 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.11.2",
     "react-select": "^5.8.1",
+    "vite-plugin-pwa": "^0.20.5",
     "vitest": "^1.4.0",
     "webpack": "^5.95.0"
   },
