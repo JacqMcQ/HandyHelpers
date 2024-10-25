@@ -18,11 +18,12 @@ const typeDefs = gql`
   type Address {
     _id: ID!
     nickname: String!
-    street: String!
+    address_line_1: String!
     city: String!
     state: String!
     zip: String!
-    country: String!
+    country: String! # Add country field here
+    user: User!
   }
 
   type Service {
@@ -59,13 +60,12 @@ const typeDefs = gql`
 
     addAddress(
       nickname: String!
-      street: String!
+      address_line_1: String!
       city: String!
       state: String!
       zip: String!
-      country: String!
-      userId: ID!
-    ): Address
+      country: String! 
+    ): Address!
 
     addService(name: String!, description: String, price: Float): Service
   }

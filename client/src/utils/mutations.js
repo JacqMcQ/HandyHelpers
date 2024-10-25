@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
 export const SIGNUP = gql`
-  mutation signup(
+  mutation Signup(
     $firstName: String!
     $lastName: String!
     $email: String!
@@ -18,11 +18,15 @@ export const SIGNUP = gql`
       token
       user {
         _id
+        firstName
+        lastName
+        email
         username
       }
     }
   }
 `;
+
 // Login Mutation
 export const LOGIN = gql`
   mutation login($email: String!, $password: String!) {
@@ -36,28 +40,26 @@ export const LOGIN = gql`
   }
 `;
 
-export const ADD_ADDRESSES = gql`
-  mutation addAddress(
+export const ADD_ADDRESS = gql`
+  mutation AddAddress(
     $nickname: String!
-    $street: String!
+    $address_line_1: String!
     $city: String!
     $state: String!
     $zip: String!
     $country: String!
-    $userId: ID!
   ) {
     addAddress(
       nickname: $nickname
-      street: $street
+      address_line_1: $address_line_1
       city: $city
       state: $state
       zip: $zip
       country: $country
-      userId: $userId
     ) {
       _id
       nickname
-      street
+      address_line_1
       city
       state
       zip
@@ -66,3 +68,46 @@ export const ADD_ADDRESSES = gql`
   }
 `;
 
+// Queries
+export const GET_USERS = gql`
+  query getUsers {
+    getUsers {
+      _id
+      firstName
+      lastName
+      email
+      username
+    }
+  }
+`;
+
+// Get all addresses
+export const GET_ADDRESSES = gql`
+  query getAddresses {
+    getAddresses {
+      _id
+      nickname
+      address_line_1
+      city
+      state
+      zip
+      user {
+        _id
+        firstName
+        lastName
+      }
+    }
+  }
+`;
+
+// Get all services
+export const GET_SERVICES = gql`
+  query getServices {
+    getServices {
+      _id
+      name
+      description
+      price
+    }
+  }
+`;

@@ -15,12 +15,10 @@ router.use(async (req, res, next) => {
   }
 });
 
-// GET all addresses
+// GET all addresses per user
 router.get("/", async (req, res) => {
-  console.log("GET request received for addresses");
   try {
-    const addresses = await Address.find({});
-    console.log("Retrieved addresses:", addresses);
+    const addresses = await Address.find({ user: req.user._id });
     res.json(addresses);
   } catch (error) {
     console.error("Error retrieving addresses:", error);
