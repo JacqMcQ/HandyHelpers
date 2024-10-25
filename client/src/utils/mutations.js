@@ -37,25 +37,31 @@ export const LOGIN = gql`
 `;
 
 export const ADD_ADDRESSES = gql`
-  mutation add_address(
-    $nickname: String
-    $address_line_1: String!
+  mutation addAddress(
+    $nickname: String!
+    $street: String!
     $city: String!
     $state: String!
     $zip: String!
+    $country: String!
     $userId: ID!
   ) {
-    add_address(
-      address_line_1: $address_line_1
+    addAddress(
+      nickname: $nickname
+      street: $street
       city: $city
       state: $state
       zip: $zip
+      country: $country
+      userId: $userId
     ) {
-      token
-      user {
-        _id
-        username
-      }
+      _id
+      nickname
+      street
+      city
+      state
+      zip
+      country
     }
   }
 `;
