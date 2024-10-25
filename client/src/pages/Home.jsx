@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
-    <div className="home-container">
+    <div className="home-container box">
       <section className="hero" style={{ backgroundColor: "#4a90e2" }}>
         <div className="hero-body">
           <div className="container has-text-centered">

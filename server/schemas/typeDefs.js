@@ -6,7 +6,7 @@ const typeDefs = gql`
     firstName: String!
     lastName: String!
     email: String!
-    username: String! # Add username field here
+    username: String!
     addresses: [Address]
   }
 
@@ -17,12 +17,12 @@ const typeDefs = gql`
 
   type Address {
     _id: ID!
-    nickname: String! # Add nickname field here
-    address_line_1: String!
+    nickname: String!
+    street: String!
     city: String!
     state: String!
     zip: String!
-    user: User!
+    country: String!
   }
 
   type Service {
@@ -52,19 +52,20 @@ const typeDefs = gql`
       lastName: String!
       email: String!
       password: String!
-      username: String! # Add username argument here
+      username: String!
     ): Auth
 
     login(email: String!, password: String!): Auth
 
     addAddress(
-      nickname: String! # Add nickname argument here
-      address_line_1: String!
+      nickname: String!
+      street: String!
       city: String!
       state: String!
       zip: String!
+      country: String!
       userId: ID!
-    ): Address!
+    ): Address
 
     addService(name: String!, description: String, price: Float): Service
   }

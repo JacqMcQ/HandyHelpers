@@ -19,7 +19,7 @@ export const GET_ADDRESSES = gql`
     getAddresses {
       _id
       nickname
-      address_line_1
+      street
       city
       state
       zip

@@ -95,7 +95,7 @@ const RepairServices = () => {
   }, [location]);
 
   return (
-    <div className="container">
+    <div className="container box">
       <h1 className="title has-text-centered">Repair Services</h1>
       <form onSubmit={handleSearch}>
         <input

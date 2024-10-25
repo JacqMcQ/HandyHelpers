@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { useMutation } from "@apollo/client"; // Make sure this is imported
+import { ADD_ADDRESSES } from "../utils/mutations"; 
+import Auth from "../utils/auth"; // Make sure Auth is imported
 
 const Profile = () => {
   const [addresses, setAddresses] = useState([]);
@@ -13,6 +16,15 @@ const Profile = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false); // Add Address modal state
   const [deleteIndex, setDeleteIndex] = useState(null); // To track the index of the address to be deleted
 
+  const [addAddress] = useMutation(ADD_ADDRESSES, {
+    onCompleted: (data) => {
+      setAddresses((prevAddresses) => [...prevAddresses, data.addAddress]);
+    },
+    onError: (error) => {
+      console.error("Error adding address:", error);
+    },
+  });
+
   // Handle change for new address input
   const handleNewAddressChange = (e) => {
     const { name, value } = e.target;
@@ -23,20 +35,26 @@ const Profile = () => {
   };
 
   // Add new address to the list
-  const handleAddAddress = (e) => {
+  const handleAddAddress = async (e) => {
     e.preventDefault();
-    setAddresses((prevAddresses) => [...prevAddresses, newAddress]);
-    setNewAddress({
-      nickname: "",
-      street: "",
-      city: "",
-      state: "",
-      zip: "",
-      country: "",
-    });
-    setIsAddModalOpen(false); // Close modal after submitting
+    const userData = Auth.getProfile(); // Get user data from AuthService
+    const userId = userData.data._id; // Extract user ID
+  
+    try {
+      await addAddress({ variables: { ...newAddress, userId } }); // Include userId in the variables
+      setNewAddress({
+        nickname: "",
+        street: "",
+        city: "",
+        state: "",
+        zip: "",
+        country: "",
+      });
+      setIsAddModalOpen(false); // Close modal after successful submission
+    } catch (error) {
+      console.error("Submission failed:", error);
+    }
   };
-
   // Confirm delete address
   const confirmDelete = (index) => {
     setDeleteIndex(index); // Set the index of the address to be deleted
@@ -52,7 +70,7 @@ const Profile = () => {
   };
 
   return (
-    <div className="profile-container">
+    <div className="profile-container box">
       <h1 className="title">User Profile</h1>
       <button
         className="button is-primary mb-4"

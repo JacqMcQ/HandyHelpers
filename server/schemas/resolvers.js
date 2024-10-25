@@ -12,9 +12,12 @@ const resolvers = {
         throw new Error("Failed to fetch users");
       }
     },
-    getAddresses: async () => {
+    getAddresses: async (parents,args,context) => {
       try {
-        return await Address.find().populate("user");
+        if (!context.user) {
+          throw new AuthenticationError("Not authenticated");
+        }
+        return await User.findById(context.user._id).populate("addresses");
       } catch (error) {
         console.error(error);
         throw new Error("Failed to fetch addresses");
@@ -75,44 +78,53 @@ const resolvers = {
       }
     },
 
-    addAddress: async (_, { nickname, address_line_1, city, state, zip, userId }) => {
+    addAddress: async (_, { nickname, street, city, state, zip, country, userId }) => {
+      console.log("Adding address with data:", {
+        nickname,
+        street,
+        city,
+        state,
+        zip,
+        country,
+        userId,
+      });
+    
       try {
         const user = await User.findById(userId);
         if (!user) {
           throw new AuthenticationError("User not found");
         }
-
+    
+        // Create a new Address instance
         const address = new Address({
           nickname,
-          address_line_1,
+          street,
           city,
           state,
           zip,
-          user: userId,
+          country,
         });
-
-        await address.save();
-
+    
+        // Save the address to the database
+        const savedAddress = await address.save();
+        console.log("Saved Address:", savedAddress); // Log the saved address to verify its contents
+    
+        // Return the saved address including the _id
         return {
-          id: address._id.toString(),
-          nickname,
-          address_line_1,
-          city,
-          state,
-          zip,
-          user: {
-            id: user._id.toString(),
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email,
-          },
+          _id: savedAddress._id.toString(), // Ensure you include the _id field
+          nickname: savedAddress.nickname,
+          street: savedAddress.street,
+          city: savedAddress.city,
+          state: savedAddress.state,
+          zip: savedAddress.zip,
+          country: savedAddress.country,
         };
       } catch (error) {
-        console.error(error);
+        console.error("Error in addAddress:", error);
         throw new Error("Failed to add address");
       }
     },
-
+    
     addService: async (_, { name, description, price }) => {
       try {
         const newService = new Service({ name, description, price });
