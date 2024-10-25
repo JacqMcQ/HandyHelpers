@@ -45,10 +45,10 @@ const startApolloServer = async () => {
 
   // Serve files in production
   if (process.env.NODE_ENV === "production") {
-    app.use(express.static(path.join(process.cwd(), "client/dist"))); // Adjusted path to be relative to the current working directory
+    app.use(express.static(path.join(process.cwd(), "../client/dist"))); // Adjusted path to be relative to the current working directory
 
     app.get("*", (req, res) => {
-      res.sendFile(path.join(process.cwd(), "client/dist/index.html")); // Adjusted path to be relative to the current working directory
+      res.sendFile(path.join(process.cwd(), "../client/dist/index.html")); // Adjusted path to be relative to the current working directory
     });
   }
 
