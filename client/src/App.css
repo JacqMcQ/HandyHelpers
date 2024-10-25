@@ -221,3 +221,42 @@ header {
 .footer-content p a:hover {
   color: #ecf0f1
 }
+
+.resource-container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.resource-container h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #2c3e50;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.resource-container p {
+  font-size: 1.2rem;
+  color: #ffff;
+  margin: 15px 0 10px;
+  line-height: 1.5;
+}
+
+.resource-container li {
+  font-size: 1rem;
+  color: #2c3e50;
+  margin-left: 20px;
+  list-style: disc;
+  line-height: 1.6;
+}
+
+.resource-container .email-link {
+  color: #2c3e50;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+.resource-container .email-link:hover {
+  text-decoration: none;
+}
