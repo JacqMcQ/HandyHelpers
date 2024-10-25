@@ -7,9 +7,9 @@ Installation
 -------------------
 TBA
 
-How to Guide
+Important Information
 ----------------------
-TBA
+If not added before 10/28/24, compatibility with "Swipe" is expected to be added soon. Stay tuned!
 
 Special Thanks to:
 ----------------------
