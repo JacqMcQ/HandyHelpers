@@ -209,5 +209,15 @@ header {
 }
 
 .footer-content p {
-  padding: 0.2rem;
+  margin: 0.5rem 0;
+}
+
+.footer-content p a {
+  color: #f1c40f;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-content p a:hover {
+  color: #ecf0f1
 }

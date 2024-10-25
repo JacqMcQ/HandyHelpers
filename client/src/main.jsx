@@ -15,6 +15,10 @@ import Signup from "./pages/Signup";
 import JobCenter from "./pages/JobCenter";
 import Error from "./pages/Error";
 
+import AboutUs from './pages/AboutUs';
+import Contact from './pages/Contact';
+import FAQ from './pages/FAQ';
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -52,6 +56,18 @@ const router = createBrowserRouter([
       {
         path: "landscape-services",
         element: <LandscapeServices />,
+      },
+      {
+        path: "about-us",
+        element: <AboutUs />,
+      },
+      {
+        path: "contact",
+        element: <Contact />,
+      },
+      {
+        path: "faq",
+        element: <FAQ />,
       },
     ],
   },
