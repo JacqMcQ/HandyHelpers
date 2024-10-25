@@ -113,7 +113,7 @@ const CleaningServices = () => {
   }, [location]);
 
   return (
-    <div className="container">
+    <div className="container box">
       <h1 className="title has-text-centered">
         Find Cleaning Services in Your Area
       </h1>

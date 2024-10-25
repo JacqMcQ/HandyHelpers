@@ -11,7 +11,7 @@ const JobCenter = () => {
   useEffect(() => {
     if (addressData && addressData.getAddresses) {
       const clientAddresses = addressData.getAddresses.map(address => ({
-        fullAddress: `${address.address_line_1}, ${address.city}, ${address.state} ${address.zip}`,
+        fullAddress: `${address.street}, ${address.city}, ${address.state} ${address.zip}`,
         nickname: address.nickname,
       }));
       setAddresses(clientAddresses.length > 0 ? clientAddresses : []); // Set empty array if no addresses
