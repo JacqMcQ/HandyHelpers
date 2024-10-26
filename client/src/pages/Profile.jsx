@@ -7,7 +7,7 @@ const Profile = () => {
   const [addresses, setAddresses] = useState([]); // Address state
   const [newAddress, setNewAddress] = useState({
     nickname: "",
-    street: "",
+    address_line_1: "",
     city: "",
     state: "",
     zip: "",
@@ -15,13 +15,14 @@ const Profile = () => {
   });
   const [isAddModalOpen, setIsAddModalOpen] = useState(false); // Modal state
   const [deleteIndex, setDeleteIndex] = useState(null); // Index to track address deletion
-  const userId = localStorage.getItem("userId"); // Get user ID from localStorage (or another method)
 
   // Query to fetch addresses
-  const { loading, error, data } = useQuery(GET_ADDRESSES);
+  const { loading, error, data } = useQuery(GET_ADDRESSES, {
+    fetchPolicy: "network-only", // Ensure fresh data
+  });
 
   // Mutation to add a new address
-  const [addAddress] = useMutation(ADD_ADDRESS); // Changed from ADD_ADDRESSES to ADD_ADDRESS
+  const [addAddress] = useMutation(ADD_ADDRESS);
 
   // Effect to load addresses from the backend
   useEffect(() => {
@@ -31,19 +32,18 @@ const Profile = () => {
   }, [data]);
 
   // Handle change for new address input
-  const handleNewAddressChange = (e) => {
-    const { name, value } = e.target;
-    setNewAddress((prevAddress) => ({
-      ...prevAddress,
-      [name]: value,
-    }));
-  };
-
+const handleNewAddressChange = (e) => {
+  const { name, value } = e.target;
+  setNewAddress((prevAddress) => ({
+    ...prevAddress,
+    [name]: value,
+  }));
+};
   // Add new address to the server
   const handleAddAddress = async (e) => {
     e.preventDefault();
-    const { nickname, street, city, state, zip, country } = newAddress;
-    if (!nickname || !street || !city || !state || !zip || !country) {
+    const { nickname, address_line_1, city, state, zip, country } = newAddress;
+    if (!nickname || !address_line_1 || !city || !state || !zip || !country) {
       console.error("Please fill in all fields");
       return;
     }
@@ -51,7 +51,7 @@ const Profile = () => {
       const { data } = await addAddress({
         variables: {
           nickname,
-          address_line_1: street,
+          address_line_1,
           city,
           state,
           zip,
@@ -63,7 +63,7 @@ const Profile = () => {
       // Reset the form
       setNewAddress({
         nickname: "",
-        street: "",
+        address_line_1: "",
         city: "",
         state: "",
         zip: "",
@@ -74,12 +74,13 @@ const Profile = () => {
       console.error("Error adding address:", err);
     }
   };
-  // Confirm delete address (rest of the delete logic remains unchanged)
+
+  // Confirm delete address
   const confirmDelete = (index) => {
     setDeleteIndex(index);
   };
 
-  // Handle delete address (rest of the delete logic remains unchanged)
+  // Handle delete address
   const handleDeleteAddress = () => {
     const updatedAddresses = addresses.filter(
       (_, index) => index !== deleteIndex
@@ -164,8 +165,8 @@ const Profile = () => {
                     <input
                       className="input"
                       type="text"
-                      name="street"
-                      value={newAddress.street}
+                      name="address_line_1"
+                      value={newAddress.address_line_1}
                       onChange={handleNewAddressChange}
                       placeholder="123 Main St"
                       required
