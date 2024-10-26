@@ -6,10 +6,10 @@
   "scripts": {
     "start": "node server --ignore client",
     "develop": "concurrently \"cd server && npm run watch\" \"cd client && npm run dev\"",
-    "install": "cd server && npm i && cd ../client && npm i",
-     "postinstall": "cd client && npm install && cd ../server && npm install",
+    "postinstall": "cd client && npm install && cd ../server && npm install",
     "build": "cd client && npm run build"
   },
+  
   "keywords": [],
   "author": "",
   "license": "ISC",
