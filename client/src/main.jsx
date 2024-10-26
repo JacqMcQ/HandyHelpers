@@ -1,3 +1,4 @@
+import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
@@ -24,7 +25,7 @@ const GRAPHQL_ENDPOINT = "https://handy-helpers.onrender.com/graphql";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App graphqlEndpoint={GRAPHQL_ENDPOINT} />, // Pass endpoint here
+    element: <App graphqlEndpoint={GRAPHQL_ENDPOINT} />, // Pass the endpoint here
     errorElement: <Error />,
     children: [
       {
