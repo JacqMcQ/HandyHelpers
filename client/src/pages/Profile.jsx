@@ -26,7 +26,7 @@ const Profile = () => {
   // Effect to load addresses from the backend
   useEffect(() => {
     if (data && data.getAddresses) {
-      setAddresses(data.getAddresses); 
+      setAddresses(data.getAddresses);
     }
   }, [data]);
 
@@ -40,43 +40,43 @@ const Profile = () => {
   };
 
   // Add new address to the server
-const handleAddAddress = async (e) => {
-  e.preventDefault();
-  const { nickname, street, city, state, zip, country } = newAddress;
-  if (!nickname || !street || !city || !state || !zip || !country) {
-    console.error("Please fill in all fields");
-    return;
-  }
-  try {
-    const { data } = await addAddress({
-      variables: {
-        nickname,
-        address_line_1: street,
-        city,
-        state,
-        zip,
-        country, 
-      },
-    });
-    
-    setAddresses([...addresses, data.addAddress]);
-    // Reset the form
-    setNewAddress({
-      nickname: "",
-      street: "",
-      city: "",
-      state: "",
-      zip: "",
-      country: "",
-    });
-    setIsAddModalOpen(false);
-  } catch (err) {
-    console.error("Error adding address:", err);
-  }
-};
+  const handleAddAddress = async (e) => {
+    e.preventDefault();
+    const { nickname, street, city, state, zip, country } = newAddress;
+    if (!nickname || !street || !city || !state || !zip || !country) {
+      console.error("Please fill in all fields");
+      return;
+    }
+    try {
+      const { data } = await addAddress({
+        variables: {
+          nickname,
+          address_line_1: street,
+          city,
+          state,
+          zip,
+          country,
+        },
+      });
+
+      setAddresses([...addresses, data.addAddress]);
+      // Reset the form
+      setNewAddress({
+        nickname: "",
+        street: "",
+        city: "",
+        state: "",
+        zip: "",
+        country: "",
+      });
+      setIsAddModalOpen(false);
+    } catch (err) {
+      console.error("Error adding address:", err);
+    }
+  };
   // Confirm delete address (rest of the delete logic remains unchanged)
   const confirmDelete = (index) => {
-    setDeleteIndex(index); 
+    setDeleteIndex(index);
   };
 
   // Handle delete address (rest of the delete logic remains unchanged)
@@ -84,8 +84,8 @@ const handleAddAddress = async (e) => {
     const updatedAddresses = addresses.filter(
       (_, index) => index !== deleteIndex
     );
-    setAddresses(updatedAddresses); 
-    setDeleteIndex(null); 
+    setAddresses(updatedAddresses);
+    setDeleteIndex(null);
   };
 
   if (loading) return <p>Loading addresses...</p>;
