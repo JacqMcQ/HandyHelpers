@@ -6,10 +6,10 @@ import { authMiddleware } from "./utils/auth.js";
 import { typeDefs, resolvers } from "./schemas/index.js";
 import connect from "./config/connection.js"; // Import the connect function
 import dotenv from "dotenv";
-import googlePlacesRouter from "./routes/googlePlacesRoutes.js"; 
+import googlePlacesRouter from "./routes/googlePlacesRoutes.js";
 import cors from "cors";
 
-dotenv.config(); 
+dotenv.config();
 console.log("JWT Secret", process.env.JWT_SECRET);
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -25,7 +25,7 @@ const startApolloServer = async () => {
 
   await server.start();
 
-//Middleware to parse request
+  //Middleware to parse request
   app.use(express.urlencoded({ extended: false }));
   app.use(express.json());
 
@@ -33,9 +33,9 @@ const startApolloServer = async () => {
   app.use(cors());
 
   // Google Places API route
-    app.use("/api/google-places", googlePlacesRouter); 
+  app.use("/api/google-places", googlePlacesRouter);
 
-    //GraphQL middleware
+  //GraphQL middleware
   app.use(
     "/graphql",
     expressMiddleware(server, {
@@ -45,10 +45,10 @@ const startApolloServer = async () => {
 
   // Serve files in production
   if (process.env.NODE_ENV === "production") {
-    app.use(express.static(path.join(process.cwd(), "../client/dist"))); // Adjusted path to be relative to the current working directory
+    app.use(express.static(path.join(process.cwd(), "client/dist"))); // Adjusted path to be relative to the current working directory
 
     app.get("*", (req, res) => {
-      res.sendFile(path.join(process.cwd(), "../client/dist/index.html")); // Adjusted path to be relative to the current working directory
+      res.sendFile(path.join(process.cwd(), "client/dist/index.html")); // Adjusted path to be relative to the current working directory
     });
   }
 
