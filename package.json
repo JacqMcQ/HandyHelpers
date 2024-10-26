@@ -1,17 +1,17 @@
 {
   "name": "handy-helper",
   "version": "1.0.0",
-  "description": "",
-  "main": "server/server.js",
+  "description": "A MERN Stack application using React, GraphQL, Node.js, Express.js, MongoDB, and JWT for authentication.",
+  "main": "index.js",
   "scripts": {
-    "start": "node server --ignore client",
+    "start": "cd server && npm run start",
     "develop": "concurrently \"cd server && npm run watch\" \"cd client && npm run dev\"",
     "install": "cd server && npm i && cd ../client && npm i",
     "seed": "cd server && npm run seed",
     "build": "cd client && npm run build"
   },
   "keywords": [],
-  "author": "",
+  "author": "group 5",
   "license": "ISC",
   "devDependencies": {
     "concurrently": "^5.1.0"
