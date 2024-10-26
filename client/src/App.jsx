@@ -1,3 +1,4 @@
+import React from "react"; // Add this line
 import { useEffect } from "react";
 import {
   ApolloClient,
@@ -13,9 +14,8 @@ import Footer from "./components/Footer";
 import Nav from "./components/Nav";
 
 function App({ graphqlEndpoint }) {
-  // Create the HTTP link with the passed endpoint
   const httpLink = createHttpLink({
-    uri: graphqlEndpoint, // Use the passed GraphQL endpoint
+    uri: graphqlEndpoint,
   });
 
   const authLink = setContext((_, { headers }) => {
