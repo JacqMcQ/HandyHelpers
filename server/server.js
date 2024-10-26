@@ -37,7 +37,8 @@ const startApolloServer = async () => {
   // enable CORS middleware
   app.use(
     cors({
-      origin: "*",
+      origin: "https://handyhelpers.onrender.com",
+      credentials: true,
     })
   );
   // Google Places API route
