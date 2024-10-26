@@ -67,7 +67,20 @@ export const ADD_ADDRESS = gql`
     }
   }
 `;
-
+// Delete Address Mutation
+export const DELETE_ADDRESS = gql`
+  mutation deleteAddress($addressId: ID!) {
+    deleteAddress(addressId: $addressId) {
+      _id
+      nickname
+      address_line_1
+      city
+      state
+      zip
+      country
+    }
+  }
+`;
 // Queries
 export const GET_USERS = gql`
   query getUsers {

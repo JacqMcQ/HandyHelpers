@@ -7,7 +7,6 @@ import { typeDefs, resolvers } from "./schemas/index.js";
 import connect from "./config/connection.js"; // Import the connect function
 import dotenv from "dotenv";
 import googlePlacesRouter from "./routes/googlePlacesRoutes.js"; 
-import cors from "cors";
 import { fileURLToPath } from 'url';
 
 
@@ -34,13 +33,6 @@ const startApolloServer = async () => {
   app.use(express.urlencoded({ extended: false }));
   app.use(express.json());
 
-  // enable CORS middleware
-  app.use(
-    cors({
-      origin: "https://handyhelpers.onrender.com",
-      credentials: true,
-    })
-  );
   // Google Places API route
   app.use("/api/google-places", googlePlacesRouter);
 

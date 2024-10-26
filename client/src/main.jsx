@@ -19,7 +19,7 @@ import Contact from "./pages/Contact";
 import FAQ from "./pages/FAQ";
 
 // Define the GraphQL endpoint
-const GRAPHQL_ENDPOINT = "https://handy-helpers.onrender.com/graphql";
+const GRAPHQL_ENDPOINT = "/graphql";
 
 // Create the router
 const router = createBrowserRouter([

@@ -8,6 +8,7 @@ export default defineConfig({
   server: {
     port: 3000,
     open: true,
+    // Proxy settings are only needed during development
     proxy: {
       "/graphql": {
         target: "http://localhost:5000",
@@ -25,9 +26,5 @@ export default defineConfig({
   },
   build: {
     outDir: "dist",
-  },
-  test: {
-    globals: true,
-    environment: "happy-dom",
   },
 });

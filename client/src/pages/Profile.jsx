@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useQuery, useMutation } from "@apollo/client"; // Import Apollo hooks
-import { GET_ADDRESSES } from "../utils/queries"; // Import the query to get addresses
-import { ADD_ADDRESS } from "../utils/mutations"; // Corrected import
+import { useQuery, useMutation } from "@apollo/client";
+import { GET_ADDRESSES } from "../utils/queries";
+import { DELETE_ADDRESS, ADD_ADDRESS } from "../utils/mutations";
 
 const Profile = () => {
-  const [addresses, setAddresses] = useState([]); // Address state
+  const [addresses, setAddresses] = useState([]);
   const [newAddress, setNewAddress] = useState({
     nickname: "",
     address_line_1: "",
@@ -13,33 +13,32 @@ const Profile = () => {
     zip: "",
     country: "",
   });
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false); // Modal state
-  const [deleteIndex, setDeleteIndex] = useState(null); // Index to track address deletion
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [deleteIndex, setDeleteIndex] = useState(null);
 
-  // Query to fetch addresses
   const { loading, error, data } = useQuery(GET_ADDRESSES, {
-    fetchPolicy: "network-only", // Ensure fresh data
+    fetchPolicy: "network-only",
   });
 
-  // Mutation to add a new address
   const [addAddress] = useMutation(ADD_ADDRESS);
+  const [deleteAddress] = useMutation(DELETE_ADDRESS, {
+    refetchQueries: [{ query: GET_ADDRESSES }],
+  });
 
-  // Effect to load addresses from the backend
   useEffect(() => {
     if (data && data.getAddresses) {
       setAddresses(data.getAddresses);
     }
   }, [data]);
 
-  // Handle change for new address input
-const handleNewAddressChange = (e) => {
-  const { name, value } = e.target;
-  setNewAddress((prevAddress) => ({
-    ...prevAddress,
-    [name]: value,
-  }));
-};
-  // Add new address to the server
+  const handleNewAddressChange = (e) => {
+    const { name, value } = e.target;
+    setNewAddress((prevAddress) => ({
+      ...prevAddress,
+      [name]: value,
+    }));
+  };
+
   const handleAddAddress = async (e) => {
     e.preventDefault();
     const { nickname, address_line_1, city, state, zip, country } = newAddress;
@@ -60,7 +59,6 @@ const handleNewAddressChange = (e) => {
       });
 
       setAddresses([...addresses, data.addAddress]);
-      // Reset the form
       setNewAddress({
         nickname: "",
         address_line_1: "",
@@ -75,18 +73,20 @@ const handleNewAddressChange = (e) => {
     }
   };
 
-  // Confirm delete address
   const confirmDelete = (index) => {
     setDeleteIndex(index);
   };
 
-  // Handle delete address
-  const handleDeleteAddress = () => {
-    const updatedAddresses = addresses.filter(
-      (_, index) => index !== deleteIndex
-    );
-    setAddresses(updatedAddresses);
-    setDeleteIndex(null);
+  const handleDeleteAddress = async () => {
+    if (deleteIndex !== null) {
+      const addressId = addresses[deleteIndex]._id;
+      try {
+        await deleteAddress({ variables: { addressId } });
+        setDeleteIndex(null);
+      } catch (err) {
+        console.error("Error deleting address:", err);
+      }
+    }
   };
 
   if (loading) return <p>Loading addresses...</p>;

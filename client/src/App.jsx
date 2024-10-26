@@ -1,4 +1,4 @@
-import React from "react"; // Add this line
+import React from "react";
 import { useEffect } from "react";
 import {
   ApolloClient,
@@ -13,9 +13,9 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Nav from "./components/Nav";
 
-function App({ graphqlEndpoint }) {
+function App() {
   const httpLink = createHttpLink({
-    uri: graphqlEndpoint,
+    uri: "/graphql", // Use relative path
   });
 
   const authLink = setContext((_, { headers }) => {
@@ -47,4 +47,4 @@ function App({ graphqlEndpoint }) {
   );
 }
 
-export default App;
+export default App; 
