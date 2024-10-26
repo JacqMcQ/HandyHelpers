@@ -8,21 +8,23 @@ import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import CleaningServices from "./pages/CleaningServices";
 import LandscapeServices from "./pages/LandscapeServices";
-
 import RepairServices from "./pages/RepairServices";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import JobCenter from "./pages/JobCenter";
 import Error from "./pages/Error";
-
 import AboutUs from "./pages/AboutUs";
 import Contact from "./pages/Contact";
 import FAQ from "./pages/FAQ";
 
+// Define the GraphQL endpoint
+const GRAPHQL_ENDPOINT = "https://handy-helpers.onrender.com/graphql";
+
+// Create the router
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <App graphqlEndpoint={GRAPHQL_ENDPOINT} />, // Pass endpoint here
     errorElement: <Error />,
     children: [
       {
@@ -73,6 +75,9 @@ const router = createBrowserRouter([
   },
 ]);
 
+// Render the application
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <RouterProvider router={router} />
+  <React.StrictMode>
+    <RouterProvider router={router} />
+  </React.StrictMode>
 );
