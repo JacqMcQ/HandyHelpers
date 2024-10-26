@@ -14,7 +14,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.join(__dirname, ".env") });
-console.log("JWT Secret", process.env.JWT_SECRET);
+
 
 const PORT = process.env.PORT || 5000;
 const app = express();
@@ -30,18 +30,20 @@ const startApolloServer = async () => {
 
   await server.start();
 
-//Middleware to parse request
+  //Middleware to parse request
   app.use(express.urlencoded({ extended: false }));
   app.use(express.json());
 
   // enable CORS middleware
-app.use(cors({
-  origin: '*', 
-}));
+  app.use(
+    cors({
+      origin: "*",
+    })
+  );
   // Google Places API route
-    app.use("/api/google-places", googlePlacesRouter); 
+  app.use("/api/google-places", googlePlacesRouter);
 
-    //GraphQL middleware
+  //GraphQL middleware
   app.use(
     "/graphql",
     expressMiddleware(server, {
@@ -49,15 +51,16 @@ app.use(cors({
     })
   );
 
-  // Serve files in production
+  // Serve static files and handle routes conditionally based on the environment
   if (process.env.NODE_ENV === "production") {
-    app.use(express.static(path.join(process.cwd(), "../client/dist"))); // Adjusted path to be relative to the current working directory
+    app.use(express.static(path.join(process.cwd(), "client/dist")));
 
     app.get("*", (req, res) => {
-      res.sendFile(path.join(process.cwd(), "../client/dist/index.html")); // Adjusted path to be relative to the current working directory
+      res.sendFile(path.join(process.cwd(), "client/dist/index.html"));
     });
+  } else {
+    app.use(express.static(path.join(process.cwd(), "client/dist"))); 
   }
-
   // Start the Express server after the database connection is established
   app.listen(PORT, () => {
     console.log(`API server running on port ${PORT}!`);
