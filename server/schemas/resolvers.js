@@ -12,69 +12,55 @@ const resolvers = {
     getServices: async () => await Service.find(),
   },
   Mutation: {
-    signup: async (_, { firstName, lastName, email, password, username }) => {
-      const userExists = await User.findOne({ email });
-      if (userExists)
-        throw new AuthenticationError("User with this email already exists");
-
-      const newUser = new User({
-        firstName,
-        lastName,
-        email,
-        password,
-        username,
-      });
-      await newUser.save();
-
-      const token = signToken(newUser);
-      return { token, user: newUser };
-    },
-
-    login: async (_, { email, password }) => {
-      const user = await User.findOne({ email });
-      if (!user || !(await user.comparePassword(password)))
-        throw new AuthenticationError("Invalid credentials");
-
+    signup: async (_, { firstName, lastName, email, password }) => {
+      const user = await User.create({ firstName, lastName, email, password });
       const token = signToken(user);
       return { token, user };
     },
-
+    login: async (_, { email, password }) => {
+      const user = await User.findOne({ email });
+      if (!user || !(await user.isCorrectPassword(password))) {
+        throw new AuthenticationError("Incorrect credentials");
+      }
+      const token = signToken(user);
+      return { token, user };
+    },
     addAddress: async (
       _,
       { nickname, address_line_1, city, state, zip, country },
-      context
+      { user }
     ) => {
-      if (!context.user) {
-        throw new AuthenticationError("Authentication required");
+      if (!user) throw new AuthenticationError("You need to be logged in!");
+
+      const address = await Address.create({
+        nickname,
+        address_line_1,
+        city,
+        state,
+        zip,
+        country,
+        user: user._id, // Associate address with user
+      });
+      return address;
+    },
+    deleteAddress: async (_, { addressId }, { user }) => {
+      if (!user) {
+        throw new AuthenticationError("You need to be logged in!");
       }
 
-      try {
-        const newAddress = await Address.create({
-          nickname,
-          address_line_1,
-          city,
-          state,
-          zip,
-          country,
-          user: context.user._id,
-        });
-
-        // Optionally, populate user in the response
-        return await Address.findById(newAddress._id).populate("user");
-      } catch (error) {
-        throw new Error("Failed to create address: " + error.message);
+      const address = await Address.findById(addressId);
+      if (!address) {
+        throw new Error("Address not found");
       }
-    },
-    
-    addService: async (_, { name, description, price }) => {
-      const newService = new Service({ name, description, price });
-      await newService.save();
-      return newService;
-    },
-  },
 
-  User: {
-    addresses: async (user) => await Address.find({ user: user._id }),
+      // Ensure the address belongs to the user
+      if (address.user.toString() !== user._id.toString()) {
+        throw new AuthenticationError("Not authorized to delete this address");
+      }
+
+      await Address.findByIdAndDelete(addressId);
+      return address; // Return the deleted address if needed
+    },
   },
 };
 

@@ -64,8 +64,10 @@ const typeDefs = gql`
       city: String!
       state: String!
       zip: String!
-      country: String! 
+      country: String!
     ): Address!
+
+     deleteAddress(addressId: ID!): Address! 
 
     addService(name: String!, description: String, price: Float): Service
   }

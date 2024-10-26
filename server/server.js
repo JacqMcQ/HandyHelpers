@@ -8,10 +8,15 @@ import connect from "./config/connection.js"; // Import the connect function
 import dotenv from "dotenv";
 import googlePlacesRouter from "./routes/googlePlacesRoutes.js"; 
 import cors from "cors";
+import { fileURLToPath } from 'url';
 
-dotenv.config(); 
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+dotenv.config({ path: path.join(__dirname, ".env") });
 console.log("JWT Secret", process.env.JWT_SECRET);
-const PORT = process.env.PORT || 3001;
+
+const PORT = process.env.PORT || 5000;
 const app = express();
 const server = new ApolloServer({
   typeDefs,
@@ -30,8 +35,9 @@ const startApolloServer = async () => {
   app.use(express.json());
 
   // enable CORS middleware
-  app.use(cors());
-
+app.use(cors({
+  origin: '*', 
+}));
   // Google Places API route
     app.use("/api/google-places", googlePlacesRouter); 
 

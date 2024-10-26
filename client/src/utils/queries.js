@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 // Get all users
 export const GET_USERS = gql`
@@ -19,7 +19,7 @@ export const GET_ADDRESSES = gql`
     getAddresses {
       _id
       nickname
-      street
+      address_line_1
       city
       state
       zip

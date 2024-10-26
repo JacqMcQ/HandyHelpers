@@ -12,9 +12,11 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Nav from "./components/Nav";
 
+// Update the URI to include the full URL
 const httpLink = createHttpLink({
-  uri: "/graphql",
+  uri: "http://localhost:5000/graphql", // Ensure the full URL is specified
 });
+
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem("id_token");
   return {
@@ -24,11 +26,11 @@ const authLink = setContext((_, { headers }) => {
     },
   };
 });
+
 const client = new ApolloClient({
   link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
-
 
 function App() {
   return (
@@ -44,6 +46,5 @@ function App() {
     </ApolloProvider>
   );
 }
-
 
 export default App;
