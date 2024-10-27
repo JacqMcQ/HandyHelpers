@@ -11,7 +11,7 @@ export default defineConfig({
     // Proxy settings are only needed during development
     proxy: {
       "/graphql": {
-        target: "http://localhost:5000",
+        target: "http://localhost:3001",
         secure: false,
         changeOrigin: true,
       },
