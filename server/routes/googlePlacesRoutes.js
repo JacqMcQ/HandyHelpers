@@ -13,6 +13,6 @@ router.get("/", getCleaningServices);
 router.get("/handyman", getHandymanServices);
 
 // Route to get landscaping services
-router.get("/landscaping", getHandymanServices); 
+router.get("/landscaping", getHandymanServices);
 
 export default router;

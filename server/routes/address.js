@@ -1,4 +1,3 @@
-// routes/address.js
 import express from "express";
 import Address from "../models/Address.js";
 import connect from "../config/connection.js";

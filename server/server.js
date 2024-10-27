@@ -6,37 +6,37 @@ import { authMiddleware } from "./utils/auth.js";
 import { typeDefs, resolvers } from "./schemas/index.js";
 import connect from "./config/connection.js"; // Import the connect function
 import dotenv from "dotenv";
-import googlePlacesRouter from "./routes/googlePlacesRoutes.js"; 
-import { fileURLToPath } from 'url';
+import googlePlacesRouter from "./routes/googlePlacesRoutes.js";
+import cors from "cors";
 
+// Load environment variables
+dotenv.config();
+console.log("JWT Secret", process.env.JWT_SECRET);
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-dotenv.config({ path: path.join(__dirname, ".env") });
-
-
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3001;
 const app = express();
 const server = new ApolloServer({
   typeDefs,
   resolvers,
 });
 
-// Create a new instance of an Apollo server with the GraphQL schema
+// Function to start Apollo server
 const startApolloServer = async () => {
   // Connect to the database
   await connect(); // Wait for the database connection
-
   await server.start();
 
-  //Middleware to parse request
+  // Middleware to parse request bodies
   app.use(express.urlencoded({ extended: false }));
   app.use(express.json());
+
+  // Enable CORS middleware before route definitions
+  app.use(cors());
 
   // Google Places API route
   app.use("/api/google-places", googlePlacesRouter);
 
-  //GraphQL middleware
+  // GraphQL middleware
   app.use(
     "/graphql",
     expressMiddleware(server, {
@@ -44,16 +44,15 @@ const startApolloServer = async () => {
     })
   );
 
-  // Serve static files and handle routes conditionally based on the environment
+  // Serve files in production
   if (process.env.NODE_ENV === "production") {
-    app.use(express.static(path.join(process.cwd(), "client/dist")));
+    app.use(express.static(path.join(process.cwd(), "client/dist"))); // Adjusted path to be relative to the current working directory
 
     app.get("*", (req, res) => {
-      res.sendFile(path.join(process.cwd(), "client/dist/index.html"));
+      res.sendFile(path.join(process.cwd(), "client/dist/index.html")); // Adjusted path to be relative to the current working directory
     });
-  } else {
-    app.use(express.static(path.join(process.cwd(), "client/dist"))); 
   }
+
   // Start the Express server after the database connection is established
   app.listen(PORT, () => {
     console.log(`API server running on port ${PORT}!`);
