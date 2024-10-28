@@ -9,6 +9,7 @@ Handy Helpers is a new application designed to help maintain the property or pro
 - [Usage](#usage)
 - [License](#license)
 - [Contributing](#contributing)
+- [Example](#example)
 - [Questions](#questions)
 
 
@@ -21,9 +22,9 @@ Follow these steps to install the application:
 
 
 ## Usage
-Sign Up: If you are new to the application, sign up and register with your credentials.
-Login: Users can login to find all of their home service needs.
-Search Services: Use your zip code to find services near you.
+- Sign Up: If you are new to the application, sign up and register with your credentials.
+- Login: Users can login to find all of their home service needs.
+- Search Services: Use your zip code to find services near you.
 
 
 ## License
@@ -46,13 +47,14 @@ This project is licensed under the [MIT license](https://opensource.org/license/
 - JWTe
 - Render
 
-
+## Example
+![](./client/public/images/example.png)
 ## Questions
 For any questions, please reach out to us at:
 - [ebaby-ak](https://github.com/ebaby-ak)
 - [JacqMcQ](https://github.com/JacqMcQ)
 - [davidevett](https://github.com/davidevett)
-- [chrvera] (https://github.com/chrvera)
-- [edamama] (https://github.com/edamama)
+- [chrvera](https://github.com/chrvera)
+- [edamama](https://github.com/edamama)
 
 Thank you!
