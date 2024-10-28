@@ -12,8 +12,8 @@ const resolvers = {
     getServices: async () => await Service.find(),
   },
   Mutation: {
-    signup: async (_, { firstName, lastName, email, password }) => {
-      const user = await User.create({ firstName, lastName, email, password });
+    signup: async (_, { firstName, lastName, email, password, username }) => {
+      const user = await User.create({ firstName, lastName, email, password, username });
       const token = signToken(user);
       return { token, user };
     },

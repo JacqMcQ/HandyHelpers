@@ -28,7 +28,6 @@ const UserSchema = new mongoose.Schema({
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Address",
-      required: true, // Ensure each user has at least one address
     },
   ],
 });

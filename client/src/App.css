@@ -274,6 +274,41 @@ header {
   align-items: center;
   z-index: 1000; /* Make sure it overlays other content */
 }
+.select {
+  width: 100%; /* Full width */
+  margin-bottom: 15px; /* Space below */
+}
+
+/* Style for the select dropdown */
+.select select {
+  appearance: none; 
+  -webkit-appearance: none;
+  -moz-appearance: none; 
+  background-color: #f5f5f5; 
+  border: 1px solid #ddd; 
+  border-radius: 4px; 
+  padding: 10px; 
+  font-size: 16px; 
+  color: #333;
+  transition: border-color 0.2s; 
+}
+
+/* Change border color on focus */
+.select select:focus {
+  border-color: #3273dc;
+  outline: none; 
+  box-shadow: 0 0 5px rgba(50, 115, 221, 0.5); 
+}
+
+/* Change background color on hover */
+.select select:hover {
+  background-color: #e6f7ff; 
+}
+
+/* Style for the modal's select dropdown */
+.modal-content .select {
+  margin-top: 0; 
+}
 
 .modal-content {
   background: white;
@@ -292,4 +327,84 @@ header {
   border: none;
   font-size: 20px;
   cursor: pointer;
+}
+/* Container styles */
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Title styles */
+.title {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+/* Subtitle styles */
+.subtitle {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+/* Form styles */
+.field {
+  margin-bottom: 20px;
+}
+
+/* Input styles */
+.input {
+  width: calc(100% - 120px);
+  margin-right: 10px;
+}
+
+/* Button styles */
+.button {
+  background-color: #3273dc; 
+  color: white;
+}
+
+/* Service list styles */
+.service-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.service-list li {
+  background: #f5f5f5; 
+  border: 1px solid #ddd; 
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 10px;
+  transition: background 0.3s;
+}
+
+.service-list li:hover {
+  background: #e6f7ff; /* Light blue on hover */
+}
+
+/* Modal styles */
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Dropdown styles */
+.select {
+  margin-bottom: 15px;
+}
+
+/* Notification styles */
+.notification.is-danger {
+  color: red;
+  background-color: #ffdddd; 
+  border: 1px solid red;
 }

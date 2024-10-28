@@ -92,23 +92,23 @@ const CleaningServices = () => {
     setIsModalOpen(true);
   };
 
-const saveServiceToAddress = async (addressId, serviceId) => {
-  try {
-    const response = await axios.post(
-      `http://localhost:3001/api/addresses/${addressId}/services`,
-      {
-        serviceId,
+  const saveServiceToAddress = async (addressId, serviceId) => {
+    try {
+      const response = await axios.post(
+        `http://localhost:3001/api/addresses/${addressId}/services`,
+        {
+          serviceId,
+        }
+      );
+      console.log("Service saved successfully:", response.data);
+    } catch (error) {
+      console.error("Error saving service to address:", error);
+      // Log error response to gain insights
+      if (error.response) {
+        console.error("Response data:", error.response.data);
       }
-    );
-    console.log("Service saved successfully:", response.data);
-  } catch (error) {
-    console.error("Error saving service to address:", error);
-    // Log error response to gain insights
-    if (error.response) {
-      console.error("Response data:", error.response.data);
     }
-  }
-};
+  };
   const handleSearch = (event) => {
     event.preventDefault();
     if (!zipCode.trim()) {
@@ -147,16 +147,19 @@ const saveServiceToAddress = async (addressId, serviceId) => {
               <p className="subtitle is-6">Address: {service.address}</p>
               <p>Description: {service.description}</p>
               <p>Price: {service.price}</p>
-              <button onClick={() => handleServiceSelect(service)}>
-                Select
-              </button>
+              <button
+                className="button is-primary"
+                onClick={() => handleServiceSelect(service)}
+                aria-label={`Select ${service.name} for address`}
+              >
+                Select Address
+              </button>{" "}
             </li>
           ))}
         </ul>
       ) : (
         <p>No cleaning services found for this location.</p>
       )}
-
       {/* Address Selection Modal */}
       {isModalOpen && (
         <div className="modal is-active">
@@ -168,24 +171,26 @@ const saveServiceToAddress = async (addressId, serviceId) => {
             <h3 className="title">
               Select Address for {selectedService?.name}
             </h3>
-            <select
-              onChange={(e) => setSelectedAddress(e.target.value)}
-              value={selectedAddress}
-            >
-              <option value="">Select an address</option>
-              {addressesLoading ? (
-                <option>Loading addresses...</option>
-              ) : addressesError ? (
-                <option>Error loading addresses</option>
-              ) : (
-                data.getAddresses?.map((address) => (
-                  <option key={address._id} value={address._id}>
-                    {address.nickname} - {address.address_line_1},{" "}
-                    {address.city}
-                  </option>
-                ))
-              )}{" "}
-            </select>
+            <div className="select is-fullwidth">
+              <select
+                onChange={(e) => setSelectedAddress(e.target.value)}
+                value={selectedAddress}
+              >
+                <option value="">Select an address</option>
+                {addressesLoading ? (
+                  <option>Loading addresses...</option>
+                ) : addressesError ? (
+                  <option>Error loading addresses</option>
+                ) : (
+                  data.getAddresses?.map((address) => (
+                    <option key={address._id} value={address._id}>
+                      {address.nickname} - {address.address_line_1},{" "}
+                      {address.city}
+                    </option>
+                  ))
+                )}
+              </select>
+            </div>
             <div className="buttons">
               <button
                 className="button is-primary"
@@ -199,7 +204,7 @@ const saveServiceToAddress = async (addressId, serviceId) => {
             </div>
           </div>
         </div>
-      )}
+      )}{" "}
     </div>
   );
 };
