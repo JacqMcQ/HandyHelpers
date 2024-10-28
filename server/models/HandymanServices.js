@@ -24,7 +24,8 @@ const handymanSchema = new Schema({
   },
 });
 
-handymanSchema.index({ location: "2dsphere" }); 
+// Create a geospatial index on the location field
+handymanSchema.index({ location: "2dsphere" });
 
 const Handyman = model("Handyman", handymanSchema);
 module.exports = Handyman;

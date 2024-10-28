@@ -4,16 +4,16 @@ import bcrypt from "bcrypt";
 const UserSchema = new mongoose.Schema({
   firstName: {
     type: String,
-    required: true, 
+    required: true,
   },
   lastName: {
     type: String,
-    required: true, 
+    required: true,
   },
   email: {
     type: String,
     required: true,
-    unique: true, 
+    unique: true,
   },
   password: {
     type: String,
@@ -22,13 +22,14 @@ const UserSchema = new mongoose.Schema({
   username: {
     type: String,
     required: true,
-    unique: true, 
+    unique: true,
   },
-  addresses: [{
-    type: mongoose.Schema.Types.ObjectId, 
-    ref: "Address",
-    required: true,  // Ensure each user has at least one address
-  }]
+  addresses: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Address",
+    },
+  ],
 });
 
 // Hash the password before saving

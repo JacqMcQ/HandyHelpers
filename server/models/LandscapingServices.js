@@ -19,7 +19,7 @@ const landscapingServiceSchema = new Schema({
   },
   services: {
     type: [String],
-    default: [], 
+    default: [],
   },
   location: {
     type: {
@@ -40,8 +40,5 @@ const landscapingServiceSchema = new Schema({
 // Create a geospatial index on the location field
 landscapingServiceSchema.index({ location: "2dsphere" });
 
-const LandscapingService = model(
-  "Landscaping",
-  landscapingServiceSchema
-);
+const LandscapingService = model("Landscaping", landscapingServiceSchema);
 module.exports = LandscapingService;

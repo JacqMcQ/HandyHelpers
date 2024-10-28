@@ -67,6 +67,7 @@ export const ADD_ADDRESS = gql`
     }
   }
 `;
+
 // Delete Address Mutation
 export const DELETE_ADDRESS = gql`
   mutation deleteAddress($addressId: ID!) {
@@ -81,46 +82,22 @@ export const DELETE_ADDRESS = gql`
     }
   }
 `;
-// Queries
-export const GET_USERS = gql`
-  query getUsers {
-    getUsers {
-      _id
-      firstName
-      lastName
-      email
-      username
-    }
-  }
-`;
 
-// Get all addresses
-export const GET_ADDRESSES = gql`
-  query getAddresses {
-    getAddresses {
+export const ADD_SERVICE_TO_ADDRESS = gql`
+  mutation addServiceToAddress($addressId: ID!, $serviceId: ID!) {
+    addServiceToAddress(addressId: $addressId, serviceId: $serviceId) {
       _id
       nickname
       address_line_1
       city
       state
       zip
-      user {
+      services {
         _id
-        firstName
-        lastName
+        name
+        description
+        price
       }
-    }
-  }
-`;
-
-// Get all services
-export const GET_SERVICES = gql`
-  query getServices {
-    getServices {
-      _id
-      name
-      description
-      price
     }
   }
 `;
