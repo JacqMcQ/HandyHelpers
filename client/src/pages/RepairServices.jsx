@@ -14,13 +14,10 @@ const RepairServices = () => {
   const fetchCoordinatesFromZipCode = async (zip) => {
     try {
       const apiKey = import.meta.env.VITE_GOOGLE_PLACES_API_KEY;
-      console.log("Using Google Places API Key:", apiKey);
       if (!apiKey) {
-        console.error("Google Places API key is not set.");
         setErrorMessage("API key not set.");
         return;
       }
-
       const response = await axios.get(
         `https://maps.googleapis.com/maps/api/geocode/json`,
         {
@@ -56,7 +53,6 @@ const RepairServices = () => {
 
     try {
       const [lat, lng] = locationString.split(",");
-      console.log("Fetching repair services with coordinates:", lat, lng);
 
       const response = await axios.get(
         `http://localhost:3001/api/google-places/handyman`,
@@ -74,7 +70,6 @@ const RepairServices = () => {
         setErrorMessage("No services found for this location.");
       }
     } catch (error) {
-      console.error("Error fetching services:", error);
       setErrorMessage("Failed to fetch repair services. Please try again.");
     }
   };

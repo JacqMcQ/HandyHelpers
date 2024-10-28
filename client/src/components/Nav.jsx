@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 const Nav = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(Auth.loggedIn());
 
-  // This useEffect runs whenever the login status changes
   useEffect(() => {
     const checkLoginStatus = () => {
       setIsLoggedIn(Auth.loggedIn());
@@ -13,8 +12,6 @@ const Nav = () => {
 
     // Listen for any event or recheck the login status
     window.addEventListener("loginStatusChanged", checkLoginStatus);
-
-    // Cleanup listener on component unmount
     return () => {
       window.removeEventListener("loginStatusChanged", checkLoginStatus);
     };

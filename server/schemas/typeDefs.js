@@ -68,8 +68,13 @@ const typeDefs = gql`
     ): Address!
 
     deleteAddress(addressId: ID!): Address!
-
-    addService(name: String!, description: String, price: Float): Service
+    addServiceToAddress(addressId: ID!, serviceId: ID!): Address
+    addService(
+      name: String!
+      description: String
+      price: Float
+      addressId: ID!
+    ): Service
   }
 `;
 

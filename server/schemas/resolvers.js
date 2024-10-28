@@ -61,7 +61,46 @@ const resolvers = {
       await Address.findByIdAndDelete(addressId);
       return address; // Return the deleted address if needed
     },
+    addServiceToAddress: async (_, { addressId, serviceId }, { user }) => {
+      if (!user) throw new AuthenticationError("You need to be logged in!");
+
+      const address = await Address.findById(addressId);
+      if (!address) {
+        throw new Error("Address not found");
+      }
+
+      // Check if the service already exists in the address
+      if (!address.services.includes(serviceId)) {
+        address.services.push(serviceId);
+        await address.save();
+      }
+
+      return address.populate("services");
+    },
+    addService: async (
+      _,
+      { name, description, price, addressId },
+      { user }
+    ) => {
+      if (!user) throw new AuthenticationError("You need to be logged in!");
+
+      const service = await Service.create({
+        name,
+        description,
+        price,
+      });
+
+      // Optionally associate this service with an address if necessary
+      const address = await Address.findById(addressId);
+      if (address) {
+        address.services.push(service._id); // Assuming address has a services array
+        await address.save();
+      }
+
+      return service;
+    },
   },
 };
+
 
 export default resolvers;

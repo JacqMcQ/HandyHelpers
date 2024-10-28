@@ -38,9 +38,7 @@ function Signup() {
 
       // Redirect to profile page after signup
       navigate("/profile");
-    } catch (err) {
-      console.error(err);
-    }
+    } catch (err) {}
   };
 
   return (

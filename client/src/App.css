@@ -1,9 +1,10 @@
 /* Global styles */
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   height: 100%;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   background-color: #3b8de0;
   color: #333;
 }
@@ -15,7 +16,8 @@ html, body {
   min-height: 100vh; /* Full viewport height */
 }
 
-.main-content, main {
+.main-content,
+main {
   flex: 1;
   padding: 40px;
 }
@@ -198,7 +200,6 @@ header {
   font-weight: bold;
 }
 
-
 /* Footer styles */
 .footer {
   width: 100%;
@@ -219,7 +220,7 @@ header {
 }
 
 .footer-content p a:hover {
-  color: #ecf0f1
+  color: #ecf0f1;
 }
 
 .resource-container {
