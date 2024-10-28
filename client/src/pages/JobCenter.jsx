@@ -18,19 +18,20 @@ const JobCenter = () => {
   const [services, setServices] = useState("");
   const [bookedServices, setBookedServices] = useState([]); // State to hold booked services
 
-  useEffect(() => {
-    if (addressData && addressData.getAddresses) {
-      const clientAddresses = addressData.getAddresses.map((address) => ({
-        fullAddress: `${address.street}, ${address.city}, ${address.state} ${address.zip}`,
-        nickname: address.nickname,
-      }));
-      setAddresses(clientAddresses.length > 0 ? clientAddresses : []);
-    } else {
-      setAddresses([]);
-    }
-  }, [addressData]);
+  //get addresses
+useEffect(() => {
+  if (addressData && addressData.getAddresses) {
+    const clientAddresses = addressData.getAddresses.map((address) => ({
+      fullAddress: `${address.address_line_1}, ${address.city}, ${address.state} ${address.zip}`,
+      nickname: address.nickname,
+    }));
+    setAddresses(clientAddresses.length > 0 ? clientAddresses : []);
+  } else {
+    setAddresses([]);
+  }
+}, [addressData]);
 
-  const handleDateChange = (newDate) => {
+const handleDateChange = (newDate) => {
     setDate(newDate);
   };
 
