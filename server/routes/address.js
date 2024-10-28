@@ -40,5 +40,30 @@ router.get("/:id", async (req, res) => {
     res.status(500).send("Error retrieving address");
   }
 });
+// POST to save a service to an address
+router.post("/:id/services", async (req, res) => {
+  const { serviceId } = req.body; // Get service ID from request body
+  try {
+    const address = await Address.findById(req.params.id);
+    if (!address) {
+      return res.status(404).send("Address not found");
+    }
+
+    // Find the service by ID
+    const service = await Service.findById(serviceId);
+    if (!service) {
+      return res.status(404).send("Service not found");
+    }
+
+    // Add the service to the address
+    address.services.push(serviceId);
+    await address.save();
+
+    res.status(200).json(address);
+  } catch (error) {
+    console.error("Error saving service to address:", error);
+    res.status(500).send("Error saving service to address");
+  }
+});
 
 export default router;
