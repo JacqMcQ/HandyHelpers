@@ -52,15 +52,15 @@ const fetchCoordinatesFromZipCode = async (zip) => {
 };
 const fetchCleaningServices = async (locationString) => {
   if (!locationString) return;
-  try {
-    const [lat, lng] = locationString.split(",");
-    const apiUrl =
-      import.meta.env.DEV
-        ? "/api/google-places"
-        : "https://maps.googleapis.com/maps/api/place/nearbysearch/json";
-    
-    const apiKey = import.meta.env.VITE_GOOGLE_PLACES_API_KEY;
 
+  const [lat, lng] = locationString.split(",");
+  const apiUrl = import.meta.env.DEV
+    ? "/api/google-places"
+    : "https://maps.googleapis.com/maps/api/place/nearbysearch/json";
+
+  const apiKey = import.meta.env.VITE_GOOGLE_PLACES_API_KEY;
+
+  try {
     const { data } = await axios.get(apiUrl, {
       params: {
         location: `${lat},${lng}`,
@@ -77,11 +77,6 @@ const fetchCleaningServices = async (locationString) => {
     setErrorMessage("Failed to fetch cleaning services.");
   }
 };
-  const handleServiceSelect = (service) => {
-    setSelectedService(service);
-    setIsModalOpen(true);
-  };
-
   const saveServiceToAddress = async (addressId, serviceId) => {
     try {
       const response = await axios.post(
