@@ -56,7 +56,7 @@ const LandscapeServices = () => {
       const [lat, lng] = locationString.split(",");
 
       const response = await axios.get(
-        "http://localhost:3001/api/google-places",
+        "https://handyhelpers.onrender.com/api/google-places",
         {
           params: {
             location: `${lat},${lng}`,
