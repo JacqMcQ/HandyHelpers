@@ -51,38 +51,32 @@ const fetchCoordinatesFromZipCode = async (zip) => {
   }
 };
 const fetchCleaningServices = async (locationString) => {
-    if (!locationString) return;
-    try {
-      const [lat, lng] = locationString.split(",");
-      const { data } = await axios.get(
-        "https://handyhelpers.onrender.com/api/google-places", // Updated URL
-        {
-          params: {
-            location: `${lat},${lng}`,
-            radius: 5000,
-            keyword: "cleaning",
-          },
-        }
-      );
-      setServices(
-        data?.map((service) => ({
-          id: uuidv4(),
-          name: service.name,
-          description: service.description || "No description available",
-          price: service.price || "N/A",
-          address: service.vicinity,
-          lat: service.geometry?.location?.lat,
-          lng: service.geometry?.location?.lng,
-        })) || []
-      );
+  if (!locationString) return;
+  try {
+    const [lat, lng] = locationString.split(",");
+    const apiUrl =
+      import.meta.env.DEV
+        ? "/api/google-places"
+        : "https://maps.googleapis.com/maps/api/place/nearbysearch/json";
+    
+    const apiKey = import.meta.env.VITE_GOOGLE_PLACES_API_KEY;
 
-      if (data.length === 0)
-        throw new Error("No services found for this location.");
-    } catch {
-      setErrorMessage("Failed to fetch cleaning services. Please try again.");
-    }
-  };
+    const { data } = await axios.get(apiUrl, {
+      params: {
+        location: `${lat},${lng}`,
+        radius: 5000,
+        keyword: "cleaning",
+        key: apiKey,
+      },
+    });
 
+    setServices(data.results || []);
+    setErrorMessage("");
+  } catch (error) {
+    console.error("Error fetching cleaning services:", error.message);
+    setErrorMessage("Failed to fetch cleaning services.");
+  }
+};
   const handleServiceSelect = (service) => {
     setSelectedService(service);
     setIsModalOpen(true);
