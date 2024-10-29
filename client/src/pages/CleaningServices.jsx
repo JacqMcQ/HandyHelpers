@@ -54,23 +54,19 @@ const fetchCleaningServices = async (locationString) => {
   if (!locationString) return;
 
   const [lat, lng] = locationString.split(",");
-  const apiUrl = import.meta.env.DEV
-    ? "/api/google-places"
-    : "https://maps.googleapis.com/maps/api/place/nearbysearch/json";
-
-  const apiKey = import.meta.env.VITE_GOOGLE_PLACES_API_KEY;
-
   try {
-    const { data } = await axios.get(apiUrl, {
-      params: {
-        location: `${lat},${lng}`,
-        radius: 5000,
-        keyword: "cleaning",
-        key: apiKey,
-      },
-    });
+    const { data } = await axios.get(
+      "https://your-backend-url.onrender.com/api/google-places",
+      {
+        params: {
+          location: `${lat},${lng}`,
+          radius: 10000,
+          keyword: "cleaning",
+        },
+      }
+    );
 
-    setServices(data.results || []);
+    setServices(data || []);
     setErrorMessage("");
   } catch (error) {
     console.error("Error fetching cleaning services:", error.message);
