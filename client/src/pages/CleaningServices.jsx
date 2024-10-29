@@ -58,7 +58,7 @@ const CleaningServices = () => {
     try {
       const [lat, lng] = locationString.split(",");
       const { data } = await axios.get(
-        "http://localhost:3001/api/google-places",
+        "https://handyhelpers.onrender.com/api/google-places", // Updated URL
         {
           params: {
             location: `${lat},${lng}`,
@@ -67,7 +67,6 @@ const CleaningServices = () => {
           },
         }
       );
-
       setServices(
         data?.map((service) => ({
           id: uuidv4(),
