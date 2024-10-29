@@ -30,30 +30,32 @@ const CleaningServices = () => {
 
   const handleZipCodeChange = (event) => setZipCode(event.target.value);
 
-  const fetchCoordinatesFromZipCode = async (zip) => {
-    try {
-      const apiKey = import.meta.env.VITE_GOOGLE_PLACES_API_KEY;
-      if (!apiKey) throw new Error("API key not set.");
+const fetchCoordinatesFromZipCode = async (zip) => {
+  try {
+    const apiKey = import.meta.env.VITE_GOOGLE_PLACES_API_KEY;
+    if (!apiKey)
+      throw new Error("API key not set or accessible in production.");
 
-      const {
-        data: { results },
-      } = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json`, {
-        params: { address: zip, key: apiKey },
-      });
+    const {
+      data: { results },
+    } = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json`, {
+      params: { address: zip, key: apiKey },
+    });
 
-      const location = results[0]?.geometry?.location;
-      if (location) {
-        setLocation(`${location.lat},${location.lng}`);
-        setErrorMessage("");
-      } else {
-        throw new Error("No results found for this ZIP code.");
-      }
-    } catch (error) {
-      setErrorMessage(error.message);
+    const location = results[0]?.geometry?.location;
+    if (location) {
+      setLocation(`${location.lat},${location.lng}`);
+      setErrorMessage("");
+    } else {
+      throw new Error("No results found for this ZIP code.");
     }
-  };
+  } catch (error) {
+    console.error("Error in fetchCoordinatesFromZipCode:", error.message);
+    setErrorMessage(error.message);
+  }
+};
 
-  const fetchCleaningServices = async (locationString) => {
+const fetchCleaningServices = async (locationString) => {
     if (!locationString) return;
     try {
       const [lat, lng] = locationString.split(",");
